@@ -16,38 +16,39 @@ class MockinizerInterceptor(
 ) : Interceptor {
 
     private val mockServer = MockWebServer().apply {
-        Completable.fromAction { start(45678) }
+        Completable.fromAction { start() }
             .onErrorComplete()
             .subscribeOn(Schedulers.io())
             .subscribe()
     }
 
-    override fun intercept(chain: Interceptor.Chain): Response =
-        with(chain) {
+    override fun intercept(chain: Interceptor.Chain): Response {
+
+        fun isMocked(request: Request) =
+            null != mocks[RequestFilter.from(request)]?.also {
+                mockServer.enqueue(it)
+            }
+
+        fun Interceptor.Chain.findServer(): HttpUrl = when(isMocked(request())) {
+            true -> request().url.newBuilder()
+                .host(mockServer.hostName)
+                .port(mockServer.port)
+                .scheme("http")
+                .build()
+                .also {
+                    Log.w(javaClass.simpleName, "--> Mockinized url: $it")
+                }
+            false -> request().url
+        }
+
+        return with(chain) {
             proceed(
                 request().newBuilder()
                     .url(findServer())
                     .build()
             )
         }
-
-    private fun Interceptor.Chain.findServer(): HttpUrl = when(isMocked(request())) {
-        true -> request().url.newBuilder()
-            .host(mockServer.hostName)
-            .port(mockServer.port)
-            .scheme("http")
-            .build()
-        false -> request().url
-    }.also {
-        Log.w(javaClass.simpleName, "--> Mockinized url: $it")
     }
-
-    private fun isMocked(request: Request) =
-        null != mocks[RequestFilter.from(
-            request
-        )]?.also {
-            mockServer.enqueue(it)
-        }
 
 }
 
