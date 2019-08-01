@@ -1,0 +1,56 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    // Define versions in a single place
+    ext {
+        gradle_version = '3.3.1'
+        kotlin_version = '1.3.41'
+        lifecycle_version = '2.0.0'
+        appcompat_version = '1.1.0-rc01'
+        cardview_version = '1.0.0'
+        recyclerview_version = '1.1.0-beta01'
+        core_version = '1.2.0-alpha02'
+        constraintlayout_version = '1.1.3'
+        retrofit_version = '2.5.0'
+        mockserver_version = '4.0.1'
+        logginginterceptor_version = '3.12.1'
+        rxkotlin_version = '2.3.0'
+        rxandroid_version = '2.1.1'
+        picasso_version = '2.71828'
+        material_version = '1.0.0'
+        dagger_version = '2.21'
+        room_version = '2.1.0'
+        logkitten_version = '1.2.2'
+        dbinspector_version = '3.4.1@aar'
+        mockito_kotlin_version = '2.1.0'
+        junit_version = '4.12'
+        ext_junit_version = '1.1.0'
+        testrunner_version = '1.1.2-alpha01'
+        espresso_version = '3.1.2-alpha01'
+        conditionwatcher_version = '0.2'
+    }
+
+    repositories {
+        google()
+        jcenter()
+        
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

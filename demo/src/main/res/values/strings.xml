@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Mockinizer</string>
+    <string name="check_logcat">Check Logcat!</string>
+</resources>
