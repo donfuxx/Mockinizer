@@ -49,21 +49,6 @@ class MockinizerInterceptor(
             mockServer.enqueue(it)
         }
 
-    data class RequestFilter(
-        val path: String? = null,
-        val body: String? = null
-    ) {
-
-        companion object {
-
-            fun from(request: Request) =
-                RequestFilter(
-                    path = request.url.encodedPath,
-                    body = request.body?.toString()
-                )
-        }
-    }
-
 }
 
 

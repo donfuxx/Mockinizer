@@ -2,9 +2,9 @@ package com.appham.mockinizer
 
 import okhttp3.mockwebserver.MockResponse
 
-val mocks: Map<MockinizerInterceptor.RequestFilter, MockResponse> = mapOf(
+val mocks: Map<RequestFilter, MockResponse> = mapOf(
 
-        MockinizerInterceptor.RequestFilter("/typicode/demo/mocked") to MockResponse().apply {
+        RequestFilter("/typicode/demo/mocked") to MockResponse().apply {
             setResponseCode(200)
             setBody(
                     """
