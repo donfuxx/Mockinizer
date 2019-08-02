@@ -17,14 +17,13 @@ fun OkHttpClient.Builder.mockinize(
     return this
 }
 
-private fun getSslSocketFactory(trustManagers: Array<TrustManager>): SSLSocketFactory {
-    val sslContext = SSLContext.getInstance("SSL")
-    sslContext.init(null, trustManagers, java.security.SecureRandom())
-    return sslContext.socketFactory
-}
+private fun getSslSocketFactory(trustManagers: Array<TrustManager>): SSLSocketFactory =
+    SSLContext.getInstance("SSL").apply {
+        init(null, trustManagers, java.security.SecureRandom())
+    }.socketFactory
 
-private fun getAllTrustingManagers(): Array<TrustManager> {
-    return arrayOf(object : X509TrustManager {
+private fun getAllTrustingManagers(): Array<TrustManager> = arrayOf(
+    object : X509TrustManager {
 
         override fun getAcceptedIssuers(): Array<X509Certificate> = emptyArray()
 
@@ -39,5 +38,5 @@ private fun getAllTrustingManagers(): Array<TrustManager> {
             authType: String
         ) {
         }
-    })
-}
+    }
+)
