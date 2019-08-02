@@ -9,11 +9,11 @@ fun OkHttpClient.Builder.mockinize(
     mocks: Map<RequestFilter, MockResponse> = mapOf(),
     trustManagers: Array<TrustManager> = getAllTrustingManagers(),
     socketFactory: SSLSocketFactory = getSslSocketFactory(trustManagers),
-    hostnameVerifier:HostnameVerifier = HostnameVerifier { _, _ -> true }
+    hostnameVerifier: HostnameVerifier = HostnameVerifier { _, _ -> true }
 ): OkHttpClient.Builder {
     addInterceptor(MockinizerInterceptor(mocks))
-    .sslSocketFactory(socketFactory, trustManagers[0] as X509TrustManager)
-    .hostnameVerifier(hostnameVerifier)
+        .sslSocketFactory(socketFactory, trustManagers[0] as X509TrustManager)
+        .hostnameVerifier(hostnameVerifier)
     return this
 }
 
