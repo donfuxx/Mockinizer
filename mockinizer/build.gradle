@@ -30,6 +30,8 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxkotlin:$rxkotlin_version"
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
     implementation "com.squareup.okhttp3:mockwebserver:$mockserver_version"
+    implementation "com.squareup.okhttp3:okhttp:$mockserver_version"
+    implementation "com.squareup.okhttp3:okhttp-tls:$mockserver_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
 
     testImplementation 'junit:junit:4.12'

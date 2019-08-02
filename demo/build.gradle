@@ -47,6 +47,7 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$logginginterceptor_version"
     implementation "com.squareup.okhttp3:mockwebserver:$mockserver_version"
+    implementation "com.squareup.okhttp3:okhttp-tls:$mockserver_version"
     implementation "com.squareup.picasso:picasso:$picasso_version"
     implementation "com.google.android.material:material:$material_version"
     implementation "com.google.dagger:dagger:$dagger_version"

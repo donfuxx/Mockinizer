@@ -1,9 +1,6 @@
 package com.appham.mockinizer
 
 import android.util.Log
-import io.reactivex.Completable
-import io.reactivex.rxkotlin.Observables
-import io.reactivex.schedulers.Schedulers
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -11,16 +8,12 @@ import okhttp3.Response
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 
+
 class MockinizerInterceptor(
     private val mocks: Map<RequestFilter, MockResponse> = emptyMap()
 ) : Interceptor {
 
-    private val mockServer = MockWebServer().apply {
-        Completable.fromAction { start() }
-            .onErrorComplete()
-            .subscribeOn(Schedulers.io())
-            .subscribe()
-    }
+    private val mockServer = MockWebServer().configure()
 
     override fun intercept(chain: Interceptor.Chain): Response {
 
@@ -33,10 +26,10 @@ class MockinizerInterceptor(
             true -> request().url.newBuilder()
                 .host(mockServer.hostName)
                 .port(mockServer.port)
-                .scheme("http")
+//                .scheme("http") //TODO: make http - https configurable
                 .build()
                 .also {
-                    Log.w(javaClass.simpleName, "--> Mockinized url: $it")
+                    Log.w(javaClass.simpleName, "--> url: ${request().url} mockinized to: $it")
                 }
             false -> request().url
         }
