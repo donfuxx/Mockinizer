@@ -23,6 +23,8 @@ android {
         }
     }
 
+    resourcePrefix 'mockinizer_'
+
 }
 
 dependencies {
