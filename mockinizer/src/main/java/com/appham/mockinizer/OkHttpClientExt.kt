@@ -3,19 +3,17 @@ package com.appham.mockinizer
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 import java.security.cert.X509Certificate
-import javax.net.ssl.SSLContext
-import javax.net.ssl.SSLSocketFactory
-import javax.net.ssl.TrustManager
-import javax.net.ssl.X509TrustManager
+import javax.net.ssl.*
 
 fun OkHttpClient.Builder.mockinize(
     mocks: Map<RequestFilter, MockResponse> = mapOf(),
     trustManagers: Array<TrustManager> = getAllTrustingManagers(),
-    socketFactory: SSLSocketFactory = getSslSocketFactory(trustManagers)
-
+    socketFactory: SSLSocketFactory = getSslSocketFactory(trustManagers),
+    hostnameVerifier:HostnameVerifier = HostnameVerifier { _, _ -> true }
 ): OkHttpClient.Builder {
-    this.addInterceptor(MockinizerInterceptor(mocks))
-    this.sslSocketFactory(socketFactory, trustManagers[0] as X509TrustManager)
+    addInterceptor(MockinizerInterceptor(mocks))
+    .sslSocketFactory(socketFactory, trustManagers[0] as X509TrustManager)
+    .hostnameVerifier(hostnameVerifier)
     return this
 }
 
