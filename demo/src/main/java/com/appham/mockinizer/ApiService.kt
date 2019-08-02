@@ -51,7 +51,7 @@ class ApiService {
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .addInterceptor(MockinizerInterceptor(mocks)) //TODO: extension function for adding interceptor etc.
+            .mockinize(mocks) //TODO: extension function for adding interceptor etc.
             .sslSocketFactory(sslSocketFactory, allTrustingManagers[0] as X509TrustManager)
             .hostnameVerifier(HostnameVerifier { _, _ -> true })
             .build()
