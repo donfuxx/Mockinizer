@@ -43,7 +43,7 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$logginginterceptor_version"
     implementation "com.squareup.okhttp3:mockwebserver:$mockserver_version"
 
-    debugImplementation "com.github.donfuxx:Mockinizer:$mockinizer_version"
+    implementation "com.github.donfuxx:Mockinizer:$mockinizer_version"
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
