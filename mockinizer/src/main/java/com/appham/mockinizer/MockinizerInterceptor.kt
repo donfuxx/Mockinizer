@@ -9,10 +9,9 @@ import okhttp3.mockwebserver.MockWebServer
 
 
 class MockinizerInterceptor(
-    private val mocks: Map<RequestFilter, MockResponse> = emptyMap()
+    private val mocks: Map<RequestFilter, MockResponse> = emptyMap(),
+    private val mockServer: MockWebServer = MockWebServer().configure()
 ) : Interceptor {
-
-    private val mockServer = MockWebServer().configure()
 
     override fun intercept(chain: Interceptor.Chain): Response {
 
