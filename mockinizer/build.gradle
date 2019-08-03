@@ -37,8 +37,7 @@ android {
 }
 
 dependencies {
-    implementation "io.reactivex.rxjava2:rxkotlin:$rxkotlin_version"
-    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version"
     implementation "com.squareup.okhttp3:mockwebserver:$mockserver_version"
     implementation "com.squareup.okhttp3:okhttp:$mockserver_version"
     implementation "com.squareup.okhttp3:okhttp-tls:$mockserver_version"

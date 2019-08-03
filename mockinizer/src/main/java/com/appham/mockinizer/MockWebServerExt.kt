@@ -1,16 +1,16 @@
 package com.appham.mockinizer
 
-import io.reactivex.Completable
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.tls.HandshakeCertificates
 import okhttp3.tls.HeldCertificate
 
 internal fun MockWebServer.configure(): MockWebServer {
-    Completable.fromAction { start() }
-        .onErrorComplete()
-        .subscribeOn(Schedulers.io())
-        .subscribe()
+
+    GlobalScope.launch {
+        start()
+    }
 
     val localhostCertificate = HeldCertificate.Builder()
         .addSubjectAlternativeName("127.0.0.1")
