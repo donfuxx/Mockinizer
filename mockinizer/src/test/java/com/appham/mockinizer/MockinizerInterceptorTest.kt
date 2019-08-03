@@ -34,7 +34,7 @@ internal class MockinizerInterceptorTest {
 
     private val systemUnderTest: MockinizerInterceptor = MockinizerInterceptor(mocks)
 
-    private val realBaseurl = "https://foo.bar/"
+    private val realBaseurl = "https://foo.bar"
 
     @BeforeEach
     fun setup() {
@@ -42,16 +42,17 @@ internal class MockinizerInterceptorTest {
     }
 
     @ParameterizedTest
-    @MethodSource("arguments")
-    fun `Should mock response When RequestFilter contains request url On intercept`(arguments: TestArguments) {
+    @MethodSource("args")
+    fun `Should mock response When RequestFilter contains request url On intercept`(args: TestData) {
+        val requestUrl = "$realBaseurl${args.requestFilter.path.orEmpty()}"
+        val originalRequest = Request.Builder().url(requestUrl).build()
 
-        val originalRequest = Request.Builder().url(arguments.requestUrl).build()
         whenever(chain.request()).thenReturn(originalRequest)
         systemUnderTest.intercept(chain)
 
         argumentCaptor<Request> {
             verify(chain).proceed(capture())
-            if (arguments.isMocked) {
+            if (args.mockResponse != null) {
                 assertNotEquals(originalRequest.url, this.firstValue.url)
             } else {
                 assertEquals(originalRequest.url, this.firstValue.url)
@@ -59,15 +60,18 @@ internal class MockinizerInterceptorTest {
         }
     }
 
-    private fun arguments() = listOf(
-                TestArguments("${realBaseurl}typicode/demo/mocked", true),
-                TestArguments("${realBaseurl}typicode/demo/foo", true),
-                TestArguments("${realBaseurl}foo", false),
-                TestArguments("${realBaseurl}meh", false)
-            ).stream()
+    private fun args() = mutableListOf(
+        TestData(RequestFilter(), null),
+        TestData(RequestFilter(path = "banana"), null),
+        TestData(RequestFilter(body = """{"type":"apple"}"""), null),
+        TestData(RequestFilter(path = "banana", body = """{"type":"apple"}"""), null)
+    ).apply {
+        addAll(mocks.map { TestData(it.key, it.value) })
+    }.stream()
 
-    data class TestArguments(
-        val requestUrl: String,
-        val isMocked: Boolean
+    data class TestData(
+        val requestFilter: RequestFilter,
+        val mockResponse: MockResponse?
     )
+
 }
