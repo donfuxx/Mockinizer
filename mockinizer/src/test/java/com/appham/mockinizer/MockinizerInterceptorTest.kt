@@ -1,18 +1,17 @@
 package com.appham.mockinizer
 
-import com.nhaarman.mockitokotlin2.argumentCaptor
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.*
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.mockwebserver.MockResponse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
-import java.util.*
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class MockinizerInterceptorTest {
 
     private val mocks: Map<RequestFilter, MockResponse> = mapOf(
@@ -35,6 +34,13 @@ internal class MockinizerInterceptorTest {
 
     private val systemUnderTest: MockinizerInterceptor = MockinizerInterceptor(mocks)
 
+    private val realBaseurl = "https://foo.bar/"
+
+    @BeforeEach
+    fun setup() {
+        clearInvocations(chain)
+    }
+
     @ParameterizedTest
     @MethodSource("arguments")
     fun `Should mock response When RequestFilter contains request url On intercept`(arguments: TestArguments) {
@@ -53,19 +59,12 @@ internal class MockinizerInterceptorTest {
         }
     }
 
-    private companion object {
-
-        const val realBaseurl = "https://foo.bar/"
-
-        @JvmStatic
-        fun arguments() =
-            Arrays.stream(
-                arrayOf(
-                    TestArguments("${realBaseurl}typicode/demo/mocked", true),
-                    TestArguments("${realBaseurl}foo", false)
-                )
-            )
-    }
+    private fun arguments() = listOf(
+                TestArguments("${realBaseurl}typicode/demo/mocked", true),
+                TestArguments("${realBaseurl}typicode/demo/foo", true),
+                TestArguments("${realBaseurl}foo", false),
+                TestArguments("${realBaseurl}meh", false)
+            ).stream()
 
     data class TestArguments(
         val requestUrl: String,
