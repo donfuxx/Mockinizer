@@ -2,6 +2,8 @@ apply plugin: 'com.android.library'
 
 apply plugin: 'kotlin-android'
 
+group='com.github.donfuxx'
+
 android {
     compileSdkVersion 28
 
