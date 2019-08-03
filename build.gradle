@@ -25,9 +25,10 @@ buildscript {
         dbinspector_version = '3.4.1@aar'
         mockito_kotlin_version = '2.1.0'
         junit_version = '4.12'
+        junit5_version = '5.5.1'
         ext_junit_version = '1.1.0'
-        testrunner_version = '1.1.2-alpha01'
-        espresso_version = '3.1.2-alpha01'
+        testrunner_version = '1.2.0'
+        espresso_version = '3.2.0'
         conditionwatcher_version = '0.2'
     }
 
