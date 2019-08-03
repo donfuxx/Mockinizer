@@ -31,7 +31,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':mockinizer')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "androidx.cardview:cardview:$cardview_version"
@@ -55,6 +54,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
+    debugImplementation "com.github.donfuxx:Mockinizer:$mockinizer_version"
     debugImplementation "com.github.donfuxx:LogKitten:$logkitten_version"
     debugImplementation "im.dino:dbinspector:$dbinspector_version"
 
