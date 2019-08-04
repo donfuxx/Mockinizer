@@ -1,3 +1,14 @@
-language: java
-jdk:
-  - oraclejdk8
+language: android	language: java
+jdk: oraclejdk8	jdk:
+env:	  - oraclejdk8
+ global:	
+    - ANDROID_API_LEVEL=28	
+    - ANDROID_BUILD_TOOLS_VERSION=28.0.3	
+android:	
+ components:	
+    - tools	
+    - platform-tools	
+    - build-tools-$ANDROID_BUILD_TOOLS_VERSION		
+    - android-$ANDROID_API_LEVEL	
+script:	
+    - ./gradlew build check
