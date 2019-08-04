@@ -24,6 +24,10 @@ class MockinizerInterceptor(
                         "Mockinizer",
                         " <-- Real request ${request().url} is now mocked to $mockResponse"
                     )
+                    mockResponse.addHeader(
+                        "server",
+                        "Mockinizer by Thomas Fuchs-Martin"
+                    )
                     mockServer.enqueue(mockResponse)
                     request().url.newBuilder()
                         .host(mockServer.hostName)
