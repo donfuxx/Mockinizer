@@ -11,7 +11,8 @@ This is particularily usefull in the following scenarios:
 
 ## Setup
 
-1. Add jitpack.io repository in **root build.gradle**: 
+### 1. Add jitpack.io repository: 
+Add jitpack.io repository in **root build.gradle**:
 ```gradle
 allprojects {
 	repositories {
@@ -20,13 +21,15 @@ allprojects {
 	}
 }
 ```
-2. Add Mockinizer gradle dependency in the **app module's build.gradle** (Usually you want to only implement it only in debug builds and not release buils) At the time of writing the latest mockinizer_version was 0.9.3, you can get **latest release** version here: https://github.com/donfuxx/Mockinizer/releases
+### 2. Add Mockinizer gradle dependency
+Add the below code in the **app module's build.gradle** (Usually you want to only implement it only in debug builds and not release buils) At the time of writing the latest mockinizer_version was 0.9.3, you can get **latest release** version here: https://github.com/donfuxx/Mockinizer/releases
 ```gradle
 dependencies {
     debugImplementation "com.github.donfuxx:Mockinizer:$mockinizer_version"
 }
 ``` 
-3. Define the **RequestFilter / MockResponse Pairs** that represent each api call that you want to mock. The RequestFilter defines the Request Path (relative to the RetroFit Baseurl) and/or the json body of the request. The MockResponse is the desirec Response that you want to get returned by your local MockWebServer. See a simple example that defines 2 mock responses where one out of them is an error:
+### 3. Define the RequestFilter / MockResponse Pairs 
+Those represent each api call that you want to mock. The **RequestFilter** defines the Request Path (relative to the RetroFit Baseurl) and/or the json body of the request. The **MockResponse** is the desirec Response that you want to get returned by your local MockWebServer. See a simple example that defines 2 mock responses where one out of them is an error:
 ```Kotlin
 package com.appham.mockinizer.demo
 
