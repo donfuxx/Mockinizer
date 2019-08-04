@@ -1,1 +1,1 @@
-include ':demo', ':mockinizer'
+include ':mockinizer'
