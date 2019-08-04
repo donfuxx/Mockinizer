@@ -64,7 +64,7 @@ Yes, that is it! Just add `.mockinize(mocks)` into the OkHttpClient.Builder chai
 
 ### 5. Launch app and check logs to verify mocking is working
 Once you call a mockinized api endpoint in your app then you can verify the mocked responses in the logcat. The attached HttpLogging interceptor should produce logs similar to:
-```json
+```
 D/OkHttp: --> GET https://my-json-server.typicode.com/typicode/demo/posts
 D/OkHttp: --> END GET
 D/OkHttp: --> GET https://my-json-server.typicode.com/mockedError
