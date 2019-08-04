@@ -23,7 +23,7 @@ allprojects {
 ```
 
 ### 2. Add Mockinizer gradle dependency
-Add the below code in the **app module's build.gradle** (Usually you want to only implement it only in debug builds and not release buils) At the time of writing the latest mockinizer_version was 0.9.3, you can get **latest release** version here: https://github.com/donfuxx/Mockinizer/releases
+Add the below code in the **app module's build.gradle** (Usually you want to only implement it only in debug builds and not release buils) At the time of writing the latest mockinizer_version was 1.0.0, you can get **latest release** version here: https://github.com/donfuxx/Mockinizer/releases
 ```gradle
 dependencies {
     debugImplementation "com.github.donfuxx:Mockinizer:$mockinizer_version"
