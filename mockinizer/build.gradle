@@ -16,7 +16,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "0.9.3"
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
@@ -62,4 +62,12 @@ dependencies {
     androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$junit5_version"
     androidTestImplementation "de.mannodermaus.junit5:android-test-core:1.1.0"
     androidTestRuntimeOnly "de.mannodermaus.junit5:android-test-runner:1.1.0"
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.groupId = "com.github.donfuxx"
+        pom.version = "1.0.0.local"
+        pom.artifactId = project.name
+    }
 }

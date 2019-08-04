@@ -35,14 +35,20 @@ buildscript {
     }
 }
 
+plugins {
+    // This plugin allows publishing android libraries
+    id "com.github.dcendents.android-maven" version "2.0"
+}
+
 allprojects {
     repositories {
         google()
         jcenter()
+        mavenLocal()
         maven { url 'https://jitpack.io' }
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
+//task clean(type: Delete) {
+//    delete rootProject.buildDir
+//}
