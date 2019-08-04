@@ -61,7 +61,7 @@ internal class MockinizerInterceptorTest {
     }
 
     private fun args() = mutableListOf(
-        TestData(RequestFilter(), null),
+        TestData(RequestFilter(), MockResponse()),
         TestData(RequestFilter(path = "banana"), null),
         TestData(RequestFilter(body = """{"type":"apple"}"""), null),
         TestData(RequestFilter(path = "banana", body = """{"type":"apple"}"""), null)
