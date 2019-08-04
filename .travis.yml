@@ -12,3 +12,4 @@ android:
     - android-$ANDROID_API_LEVEL	
 script:	
     - ./gradlew build check
+    - ./gradlew test
