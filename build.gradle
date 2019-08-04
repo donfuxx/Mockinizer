@@ -16,7 +16,6 @@ buildscript {
         junit5_version = '5.5.1'
         ext_junit_version = '1.1.0'
         testrunner_version = '1.2.0'
-        espresso_version = '3.2.0'
     }
 
     repositories {

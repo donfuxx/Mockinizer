@@ -57,7 +57,6 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit5_version"
 
     androidTestImplementation "androidx.test:runner:$testrunner_version"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
     androidTestImplementation 'org.mockito:mockito-android:3.0.0'
     androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$junit5_version"
