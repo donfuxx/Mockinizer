@@ -14,11 +14,11 @@ This is particularily usefull in the following scenarios:
 1. Add jitpack.io repository in root build.gradle: 
 ```
 allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
 	}
+}
 ```
 2. Add Mockinizer gradle dependency in the app module's build.gradle (Usually you want to only implement it only in debug builds and not release buils) At the time of writing the latest mockinizer_version was 0.9.3, you can get latest release version here: https://github.com/donfuxx/Mockinizer/releases
 ```
