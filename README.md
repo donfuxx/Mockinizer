@@ -112,7 +112,7 @@ D/OkHttp:   }
 D/OkHttp: ]
 D/OkHttp: <-- END HTTP (134-byte body)
 ```
-In above example three api calls have been made. The only api call that wasn´t mocked is the call to https://my-json-server.typicode.com/typicode/demo/posts the other calls to /mocked and /mockedError got swapped in by Mockinizer! (Notice localhost responding to those with the previously defined mock responses)
+In above example three api calls have been made. The only api call that wasn´t mocked is the call to https://my-json-server.typicode.com/typicode/demo/posts the other calls to `/mocked` and `/mockedError` got swapped in by Mockinizer! (Notice **localhost** responding to those with the previously defined mock responses)
 
 
 ## See Mockinizer Demo Project
