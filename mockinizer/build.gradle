@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'com.github.dcendents.android-maven'
 
+apply plugin: "de.mannodermaus.android-junit5"
+
 group='com.github.donfuxx'
 
 android {
@@ -47,6 +49,9 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junit5_version"
     testImplementation "org.junit.jupiter:junit-jupiter-params:$junit5_version"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
+
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit5_version"
+
     androidTestImplementation "androidx.test:runner:$testrunner_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
 }
