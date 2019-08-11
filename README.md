@@ -124,3 +124,10 @@ In above example three api calls have been made. The only api call that wasn´t 
 
 ## See Mockinizer Demo Project
 In case you want to see how it works in action then just check out the [Mockinizer demo project](https://github.com/donfuxx/MockinizerDemo)!
+
+
+## Contributing
+Pull requests are welcome! Also feel free to add issues for new feature requests and discovered bugs.
+
+## Feedback
+If you like this project then please don't forget to [stargaze it](https://github.com/donfuxx/Mockinizer/stargazers) and share it with your friends! 
