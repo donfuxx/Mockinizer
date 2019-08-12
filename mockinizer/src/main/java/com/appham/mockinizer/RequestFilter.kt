@@ -5,8 +5,8 @@ import okhttp3.RequestBody
 import okio.Buffer
 
 data class RequestFilter(
-    val method: Method = Method.GET,
     val path: String? = null,
+    val method: Method = Method.GET,
     val body: String? = null
 ) {
 
@@ -14,8 +14,8 @@ data class RequestFilter(
 
         fun from(request: Request) =
             RequestFilter(
-                method = getMethodOrDefault(request.method),
                 path = request.url.encodedPath,
+                method = getMethodOrDefault(request.method),
                 body = request.body?.asString()
             )
 

@@ -28,10 +28,10 @@ internal class MockinizerInterceptorTest {
         RequestFilter(path = "/typicode/demo/private") to MockResponse().apply {
             setResponseCode(403)
         },
-        RequestFilter(method = Method.DELETE, path = "/typicode/demo/delete") to MockResponse().apply {
+        RequestFilter(path = "/typicode/demo/delete", method = Method.DELETE ) to MockResponse().apply {
             setResponseCode(200)
         },
-        RequestFilter(method = Method.POST, path = "/typicode/demo/post", body = """{"hey":"ya"}""" ) to MockResponse().apply {
+        RequestFilter(path = "/typicode/demo/post", method = Method.POST, body = """{"hey":"ya"}""" ) to MockResponse().apply {
             setResponseCode(200)
             setBody("""{"foo":"bar"}""")
         }
