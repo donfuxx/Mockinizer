@@ -133,4 +133,4 @@ Pull requests are welcome! Just [fork Mockinizer](https://github.com/donfuxx/Moc
 If you like this project then please don't forget to [stargaze Mockinizer](https://github.com/donfuxx/Mockinizer/stargazers) and share it with your friends! 
 
 ## Stay up to date
-Always be the first to know about new releases and [add Mockinizer to you watches](https://github.com/donfuxx/Mockinizer/watchers).
+Always be the first to know about new releases and [add Mockinizer to your watches](https://github.com/donfuxx/Mockinizer/watchers).
