@@ -3,6 +3,7 @@ package com.appham.mockinizer
 import com.nhaarman.mockitokotlin2.*
 import okhttp3.Interceptor
 import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.mockwebserver.MockResponse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
@@ -15,18 +16,24 @@ import org.junit.jupiter.params.provider.MethodSource
 internal class MockinizerInterceptorTest {
 
     private val mocks: Map<RequestFilter, MockResponse> = mapOf(
-        RequestFilter("/typicode/demo/mocked") to MockResponse().apply {
-            setResponseCode(200)
-            setBody("""{"foo":"bar"}""")
-        },
-        RequestFilter("/typicode/demo/foo") to MockResponse().apply {
+        RequestFilter(path = "/typicode/demo/mocked") to MockResponse().apply {
             setResponseCode(200)
         },
-        RequestFilter("/typicode/demo/error500") to MockResponse().apply {
+        RequestFilter(path = "/typicode/demo/foo") to MockResponse().apply {
+            setResponseCode(200)
+        },
+        RequestFilter(path = "/typicode/demo/error500") to MockResponse().apply {
             setResponseCode(500)
         },
-        RequestFilter("/typicode/demo/private") to MockResponse().apply {
+        RequestFilter(path = "/typicode/demo/private") to MockResponse().apply {
             setResponseCode(403)
+        },
+        RequestFilter(method = Method.DELETE, path = "/typicode/demo/delete") to MockResponse().apply {
+            setResponseCode(200)
+        },
+        RequestFilter(method = Method.POST, path = "/typicode/demo/post", body = """{"hey":"ya"}""" ) to MockResponse().apply {
+            setResponseCode(200)
+            setBody("""{"foo":"bar"}""")
         }
     )
 
@@ -45,7 +52,10 @@ internal class MockinizerInterceptorTest {
     @MethodSource("args")
     fun `Should mock response When RequestFilter contains request url On intercept`(args: TestData) {
         val requestUrl = "$realBaseurl${args.requestFilter.path.orEmpty()}"
-        val originalRequest = Request.Builder().url(requestUrl).build()
+        val originalRequest = Request.Builder()
+            .method(args.requestFilter.method.name, args.requestFilter.body?.toRequestBody())
+            .url(requestUrl)
+            .build()
 
         whenever(chain.request()).thenReturn(originalRequest)
         systemUnderTest.intercept(chain)
@@ -63,8 +73,10 @@ internal class MockinizerInterceptorTest {
     private fun args() = mutableListOf(
         TestData(RequestFilter(), null),
         TestData(RequestFilter(path = "banana"), null),
-        TestData(RequestFilter(body = """{"type":"apple"}"""), null),
-        TestData(RequestFilter(path = "banana", body = """{"type":"apple"}"""), null)
+        TestData(RequestFilter(method = Method.DELETE, body = """{"type":"apple"}"""), null),
+        TestData(RequestFilter(method = Method.PATCH, body = """{"type":"apple"}"""), null),
+        TestData(RequestFilter(method = Method.PUT, path = "banana", body = """{"type":"apple"}"""), null),
+        TestData(RequestFilter(method = Method.POST, path = "banana", body = """{"type":"apple"}"""), null)
     ).apply {
         addAll(mocks.map { TestData(it.key, it.value) })
     }.stream()
