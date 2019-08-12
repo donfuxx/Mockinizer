@@ -127,7 +127,7 @@ In case you want to see how it works in action then just check out the [Mockiniz
 
 
 ## Contributing
-Pull requests are welcome! Just [fork Mockinizer](https://github.com/donfuxx/Mockinizer/network/members) and add submit your PR. Also feel free to add issues for new feature requests and discovered bugs.
+Pull requests are welcome! Just [fork Mockinizer](https://github.com/donfuxx/Mockinizer/network/members) and add submit your PR. Also feel free to add issues for new feature requests and discovered bugs. Check the [Contributing guidelines](https://github.com/donfuxx/Mockinizer/blob/master/CONTRIBUTING.md) for more infos.
 
 ## Feedback
 If you like this project then please don't forget to [stargaze Mockinizer](https://github.com/donfuxx/Mockinizer/stargazers) and share it with your friends! 
