@@ -130,4 +130,7 @@ In case you want to see how it works in action then just check out the [Mockiniz
 Pull requests are welcome! Also feel free to add issues for new feature requests and discovered bugs.
 
 ## Feedback
-If you like this project then please don't forget to [stargaze it](https://github.com/donfuxx/Mockinizer/stargazers) and share it with your friends! 
+If you like this project then please don't forget to [stargaze Mockinizer](https://github.com/donfuxx/Mockinizer/stargazers) and share it with your friends! 
+
+## Stay up to date
+Always be the first to know about new releases and [add Mockinizer to you watches](https://github.com/donfuxx/Mockinizer/watchers).
