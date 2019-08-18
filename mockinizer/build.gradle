@@ -18,14 +18,31 @@ android {
         versionCode 1
         versionName "1.0.0"
 
+        buildConfigField("Integer", "MOCKSERVER_PORT", "34567")
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
     }
 
     buildTypes {
+
+        debug {
+            buildConfigField("String", "BASE_URL", "\"https://my-json-server.typicode.com/typicode/demo/\"")
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        String sharedTestDir = 'src/sharedTest/java'
+        test {
+            java.srcDir sharedTestDir
+        }
+        androidTest {
+            java.srcDir sharedTestDir
         }
     }
 
@@ -57,12 +74,18 @@ dependencies {
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit5_version"
 
+    androidTestImplementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    androidTestImplementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    androidTestImplementation "com.squareup.okhttp3:logging-interceptor:$logginginterceptor_version"
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:$mockserver_version"
+
     androidTestImplementation "androidx.test:runner:$testrunner_version"
     androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
-    androidTestImplementation 'org.mockito:mockito-android:3.0.0'
     androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$junit5_version"
-    androidTestImplementation "de.mannodermaus.junit5:android-test-core:1.1.0"
-    androidTestRuntimeOnly "de.mannodermaus.junit5:android-test-runner:1.1.0"
+    androidTestImplementation "org.junit.jupiter:junit-jupiter-params:$junit5_version"
+    androidTestImplementation "org.assertj:assertj-core:$assertj_version"
+    androidTestImplementation "de.mannodermaus.junit5:android-test-core:$mannodermaus_version"
+    androidTestRuntimeOnly "de.mannodermaus.junit5:android-test-runner:$mannodermaus_version"
 }
 
 install {
