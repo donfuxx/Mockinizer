@@ -26,7 +26,7 @@ class MockinizerInterceptor(
                     )
                     mockResponse.addHeader(
                         "server",
-                        "Mockinizer by Thomas Fuchs-Martin"
+                        "Mockinizer ${BuildConfig.VERSION_NAME} by Thomas Fuchs-Martin"
                     )
                     mockServer.enqueue(mockResponse)
                     request().url.newBuilder()
