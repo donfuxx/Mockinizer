@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 data class Post(
 
     @SerializedName("id")
-    val id: Int,
+    val id: Int? = null,
 
     @SerializedName("title")
-    val title: String
+    val title: String? = null
 
 )

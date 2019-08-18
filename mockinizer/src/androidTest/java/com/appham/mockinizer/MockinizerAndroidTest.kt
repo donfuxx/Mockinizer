@@ -15,8 +15,8 @@ internal class MockinizerAndroidTest {
         val expectedUrl = "${realServerUrl}posts"
         val expectedStatusCode = 200
 
-        assertEquals(expectedBody, actualResponse.body())
         assertEquals(expectedUrl, actualResponse.raw().request.url.toString())
+        assertEquals(expectedBody, actualResponse.body())
         assertEquals(expectedStatusCode, actualResponse.code())
     }
 
@@ -27,8 +27,8 @@ internal class MockinizerAndroidTest {
         val expectedUrl = "${mockServerUrl}error500"
         val expectedStatusCode = 500
 
-        assertEquals(expectedBody, actualResponse.body())
         assertEquals(expectedUrl, actualResponse.raw().request.url.toString())
+        assertEquals(expectedBody, actualResponse.body())
         assertEquals(expectedStatusCode, actualResponse.code())
     }
 
@@ -40,8 +40,22 @@ internal class MockinizerAndroidTest {
         val expectedStatusCode = 200
         val expectedMethod = Method.DELETE.name
 
-        assertEquals(expectedBody, actualResponse.body())
         assertEquals(expectedUrl, actualResponse.raw().request.url.toString())
+        assertEquals(expectedBody, actualResponse.body())
+        assertEquals(expectedStatusCode, actualResponse.code())
+        assertEquals(expectedMethod, actualResponse.raw().request.method)
+    }
+
+    @Test
+    fun testShouldCallMockServer_WhenMockPostApiCalled() {
+        val actualResponse = TestApiService.testApi.getMockedPost(Post(title = "hey ya")).execute()
+        val expectedBody = Post(title = "foobar")
+        val expectedUrl = "${mockServerUrl}post"
+        val expectedStatusCode = 200
+        val expectedMethod = Method.POST.name
+
+        assertEquals(expectedUrl, actualResponse.raw().request.url.toString())
+        assertEquals(expectedBody, actualResponse.body())
         assertEquals(expectedStatusCode, actualResponse.code())
         assertEquals(expectedMethod, actualResponse.raw().request.method)
     }

@@ -27,10 +27,10 @@ val mocks: Map<RequestFilter, MockResponse> = mapOf(
     RequestFilter(
         path = "/typicode/demo/post",
         method = Method.POST,
-        body = """{"hey":"ya"}"""
+        body = """{"title":"hey ya"}"""
     ) to MockResponse().apply {
         setResponseCode(200)
-        setBody("""{"foo":"bar"}""")
+        setBody("""{"title":"foobar"}""")
     },
 
     RequestFilter(
