@@ -60,4 +60,18 @@ internal class MockinizerAndroidTest {
         assertEquals(expectedMethod, actualResponse.raw().request.method)
     }
 
+    @Test
+    fun testShouldCallMockServer_WhenMockHeadersApiCalled() {
+        val actualResponse = TestApiService.testApi.getMockedHeaders().execute()
+        val expectedBody = Unit
+        val expectedUrl = "${mockServerUrl}headers"
+        val expectedStatusCode = 200
+        val expectedMethod = Method.GET.name
+
+        assertEquals(expectedUrl, actualResponse.raw().request.url.toString())
+        assertEquals(expectedBody, actualResponse.body())
+        assertEquals(expectedStatusCode, actualResponse.code())
+        assertEquals(expectedMethod, actualResponse.raw().request.method)
+    }
+
 }

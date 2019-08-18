@@ -1,10 +1,7 @@
 package com.appham.mockinizer
 
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 /**
  * This Api defines how to get demo data
@@ -22,5 +19,12 @@ interface TestApi {
 
     @POST("post")
     fun getMockedPost(@Body post: Post): Call<Post>
+
+    @Headers(
+        "name: value",
+        "foo: bar"
+    )
+    @GET("headers")
+    fun getMockedHeaders(): Call<Unit>
 
 }
