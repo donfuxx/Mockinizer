@@ -35,3 +35,8 @@ before_script:
 
 script:
   - ./gradlew build connectedCheck
+
+after_script:
+  - cat /home/travis/build/donfuxx/Mockinizer/mockinizer/build/reports/lint-results.xml
+  - cat /home/travis/build/donfuxx/Mockinizer/mockinizer/build/reports/tests/testDebugUnitTest/index.html
+  - cat /home/travis/build/donfuxx/Mockinizer/mockinizer/build/reports/androidTests/connected/index.html
