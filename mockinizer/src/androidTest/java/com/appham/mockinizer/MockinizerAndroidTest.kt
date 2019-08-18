@@ -32,4 +32,18 @@ internal class MockinizerAndroidTest {
         assertEquals(expectedStatusCode, actualResponse.code())
     }
 
+    @Test
+    fun testShouldCallMockServer_WhenMockDeleteApiCalled() {
+        val actualResponse = TestApiService.testApi.getMockedDelete().execute()
+        val expectedBody = Unit
+        val expectedUrl = "${mockServerUrl}delete"
+        val expectedStatusCode = 200
+        val expectedMethod = Method.DELETE.name
+
+        assertEquals(expectedBody, actualResponse.body())
+        assertEquals(expectedUrl, actualResponse.raw().request.url.toString())
+        assertEquals(expectedStatusCode, actualResponse.code())
+        assertEquals(expectedMethod, actualResponse.raw().request.method)
+    }
+
 }

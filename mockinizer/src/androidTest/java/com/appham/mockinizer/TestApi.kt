@@ -1,6 +1,7 @@
 package com.appham.mockinizer
 
 import retrofit2.Call
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 
 /**
@@ -13,5 +14,8 @@ interface TestApi {
 
     @GET("error500")
     fun getMockedError500(): Call<Unit>
+
+    @DELETE("delete")
+    fun getMockedDelete(): Call<Unit>
 
 }
