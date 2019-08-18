@@ -12,6 +12,7 @@ android:
     - platform-tools	
     - build-tools-$ANDROID_BUILD_TOOLS_VERSION		
     - android-$ANDROID_API_LEVEL
+    - sys-img-$ANDROID_ABI-android-$ANDROID_API_LEVEL
 script:
     - android list targets
     - echo no | android create avd --force -n test -t android-$ANDROID_API_LEVEL
