@@ -13,3 +13,4 @@ android:
 script:	
     - ./gradlew build check
     - ./gradlew test
+    - ./gradlew connectedAndroidTest
