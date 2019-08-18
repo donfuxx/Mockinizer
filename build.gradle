@@ -18,6 +18,7 @@ buildscript {
         assertj_version = '3.11.0'
         ext_junit_version = '1.1.0'
         testrunner_version = '1.2.0'
+        mannodermaus_version = '1.1.0'
     }
 
     repositories {
