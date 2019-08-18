@@ -15,6 +15,7 @@ buildscript {
         mockito_kotlin_version = '2.1.0'
         junit_version = '4.12'
         junit5_version = '5.5.1'
+        assertj_version = '3.11.0'
         ext_junit_version = '1.1.0'
         testrunner_version = '1.2.0'
     }
