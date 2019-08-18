@@ -74,4 +74,18 @@ internal class MockinizerAndroidTest {
         assertEquals(expectedMethod, actualResponse.raw().request.method)
     }
 
+    @Test
+    fun testShouldCallRealServer_WhenPartialHeadersApiCalled() {
+        val actualResponse = TestApiService.testApi.getMockedHeadersPartial().execute()
+        val expectedBody = null
+        val expectedUrl = "${realServerUrl}headersPartial"
+        val expectedStatusCode = 404
+        val expectedMethod = Method.GET.name
+
+        assertEquals(expectedUrl, actualResponse.raw().request.url.toString())
+        assertEquals(expectedBody, actualResponse.body())
+        assertEquals(expectedStatusCode, actualResponse.code())
+        assertEquals(expectedMethod, actualResponse.raw().request.method)
+    }
+
 }
