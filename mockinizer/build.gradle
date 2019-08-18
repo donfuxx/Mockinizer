@@ -26,6 +26,7 @@ android {
 
         debug {
             buildConfigField("String", "BASE_URL", "\"https://my-json-server.typicode.com/typicode/demo/\"")
+            buildConfigField("Integer", "MOCKSERVER_PORT", "34567")
         }
 
         release {

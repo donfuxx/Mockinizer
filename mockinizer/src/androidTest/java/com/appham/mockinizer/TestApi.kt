@@ -11,4 +11,7 @@ interface TestApi {
     @GET("posts")
     fun getPosts(): Call<List<Post>>
 
+    @GET("error500")
+    fun getMockedError500(): Call<Unit>
+
 }
