@@ -31,4 +31,12 @@ interface TestApi {
     @GET("headersPartial")
     fun getMockedHeadersPartial(): Call<Unit>
 
+    @Headers(
+        "name: value",
+        "foo: bar",
+        "one: too much"
+    )
+    @GET("headersTooMany")
+    fun getMockedHeadersTooMany(): Call<Unit>
+
 }
