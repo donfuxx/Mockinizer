@@ -27,10 +27,20 @@ android {
         debug {
             buildConfigField("String", "BASE_URL", "\"https://my-json-server.typicode.com/typicode/demo/\"")
         }
-        
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        String sharedTestDir = 'src/sharedTest/java'
+        test {
+            java.srcDir sharedTestDir
+        }
+        androidTest {
+            java.srcDir sharedTestDir
         }
     }
 
