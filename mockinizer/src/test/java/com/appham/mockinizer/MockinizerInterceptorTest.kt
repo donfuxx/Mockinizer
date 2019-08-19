@@ -40,10 +40,11 @@ internal class MockinizerInterceptorTest {
 
         argumentCaptor<Request> {
             verify(chain).proceed(capture())
+            val actualRequest = this.firstValue
             if (args.mockResponse == null) {
-                assertThat(this.firstValue.url).isEqualTo(request.url)
+                assertThat(actualRequest.url).isEqualTo(request.url)
             } else {
-                assertThat(this.firstValue.url).isNotEqualTo(request.url)
+                assertThat(actualRequest.url).isNotEqualTo(request.url)
             }
         }
     }
