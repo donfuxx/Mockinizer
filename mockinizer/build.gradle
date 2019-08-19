@@ -16,7 +16,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.1.0"
 
         buildConfigField("Integer", "MOCKSERVER_PORT", "34567")
 
