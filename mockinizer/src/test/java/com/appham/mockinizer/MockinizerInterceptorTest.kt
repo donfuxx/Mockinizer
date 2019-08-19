@@ -28,23 +28,33 @@ internal class MockinizerInterceptorTest {
     @ParameterizedTest
     @MethodSource("args")
     fun `Should mock response When RequestFilter contains request On intercept`(args: TestData) {
+
+        // build a request for the chain to be intercepted by MockinizerInterceptor
         val requestUrl = "$realBaseurl${args.requestFilter.path.orEmpty()}"
         val request = Request.Builder()
+            .url(requestUrl)
             .method(args.requestFilter.method.name, args.requestFilter.body?.toRequestBody())
             .headers(args.requestFilter.headers)
-            .url(requestUrl)
             .build()
 
+        // plugin the request into the MockinizerInterceptor
         whenever(chain.request()).thenReturn(request)
         systemUnderTest.intercept(chain)
 
+        // capture the actual request after MockinizerInterceptor is done intercepting and assert it
         argumentCaptor<Request> {
             verify(chain).proceed(capture())
+            val actualRequest = this.firstValue
+
+            // if there is no mock response defined then url original one or localhost otherwise
             if (args.mockResponse == null) {
-                assertThat(this.firstValue.url).isEqualTo(request.url)
+                assertThat(actualRequest.url).isEqualTo(request.url)
             } else {
-                assertThat(this.firstValue.url).isNotEqualTo(request.url)
+                assertThat(actualRequest.url.host).isEqualTo("localhost")
             }
+
+            assertThat(actualRequest.method).isEqualTo(request.method)
+            assertThat(actualRequest.headers).isEqualTo(request.headers)
         }
     }
 
