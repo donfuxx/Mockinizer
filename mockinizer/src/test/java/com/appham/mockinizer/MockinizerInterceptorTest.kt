@@ -46,11 +46,11 @@ internal class MockinizerInterceptorTest {
             verify(chain).proceed(capture())
             val actualRequest = this.firstValue
 
-            // if there is no mock response defined then url original one or not otherwise
+            // if there is no mock response defined then url original one or localhost otherwise
             if (args.mockResponse == null) {
                 assertThat(actualRequest.url).isEqualTo(request.url)
             } else {
-                assertThat(actualRequest.url).isNotEqualTo(request.url)
+                assertThat(actualRequest.url.host).isEqualTo("localhost")
             }
 
             assertThat(actualRequest.method).isEqualTo(request.method)
