@@ -24,10 +24,10 @@ allprojects {
 ```
 
 ### 2. Add Mockinizer gradle dependency
-Add the below code in the **app module's build.gradle** (Usually you want to implement it only in debug builds and not release builds) At the time of writing the latest mockinizer_version was 1.0.0, you can get **latest release** version here: https://github.com/donfuxx/Mockinizer/releases
+Add the below code in the **app module's build.gradle** (Usually you want to implement it only in debug builds and not release builds) At the time of writing the latest mockinizer_version was 1.1.0, you can get **latest release** version here: https://github.com/donfuxx/Mockinizer/releases
 ```gradle
 dependencies {
-    debugImplementation "com.github.donfuxx:Mockinizer:1.0.0"
+    debugImplementation "com.github.donfuxx:Mockinizer:1.1.0"
 }
 ``` 
 You may also need to add a MockWebServer dependency in your app module:
