@@ -126,7 +126,7 @@ In above example three api calls have been made. The only api call that wasn´t 
 In case you want to see how it works in action then just check out the [Mockinizer demo project](https://github.com/donfuxx/MockinizerDemo)!
 
 ## Run automated tests
-A good way to see Mockinizer in action is to run the androidTests: just run `./gradlew build connectedCheck` from the terminal and see in the logcat how api calls got mocked!
+Another good way to see Mockinizer in action is to run the androidTests: just run `./gradlew build connectedCheck` from the terminal and see in the logcat how api calls got mocked!
 
 ## Contributing
 Pull requests are welcome! Just [fork Mockinizer](https://github.com/donfuxx/Mockinizer/network/members) and add submit your PR. Also feel free to add issues for new feature requests and discovered bugs. Check the [Contributing guidelines](https://github.com/donfuxx/Mockinizer/blob/master/CONTRIBUTING.md) for more infos.
