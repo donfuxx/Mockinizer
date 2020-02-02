@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 
 internal class MockinizerAndroidTest {
 
-    private val realServerUrl = BuildConfig.BASE_URL
-    private val mockServerUrl = "https://localhost:${BuildConfig.MOCKSERVER_PORT}/typicode/demo/"
+    private val realServerUrl = "https://my-json-server.typicode.com/typicode/demo/"
+    private val mockServerUrl = "https://localhost:34567/typicode/demo/"
 
     @Test
     fun testShouldCallRealServer_WhenPostsApiCalled() {

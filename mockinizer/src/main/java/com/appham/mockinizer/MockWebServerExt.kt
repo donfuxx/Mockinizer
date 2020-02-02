@@ -9,7 +9,7 @@ import okhttp3.tls.HeldCertificate
 internal fun MockWebServer.configure(): MockWebServer {
 
     GlobalScope.launch {
-        start(BuildConfig.MOCKSERVER_PORT)
+        start(34567)
     }
 
     val localhostCertificate = HeldCertificate.Builder()
