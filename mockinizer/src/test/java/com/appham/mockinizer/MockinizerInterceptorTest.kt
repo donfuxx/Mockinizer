@@ -59,6 +59,8 @@ internal class MockinizerInterceptorTest {
     }
 
     private fun args() = mutableListOf(
+
+        // Test requests that should NOT get mocked:
         TestData(RequestFilter(), null),
         TestData(RequestFilter(path = "banana"), null),
         TestData(RequestFilter(method = Method.DELETE, body = """{"type":"apple"}"""), null),
@@ -66,6 +68,8 @@ internal class MockinizerInterceptorTest {
         TestData(RequestFilter(method = Method.PUT, path = "banana", body = """{"type":"apple"}"""), null),
         TestData(RequestFilter(method = Method.POST, path = "banana", body = """{"type":"apple"}"""), null)
     ).apply {
+
+        // All requests from mockinizer mocks map should get mocked:
         addAll(mocks.map { TestData(it.key, it.value) })
     }.stream()
 
