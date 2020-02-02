@@ -1,10 +1,14 @@
 package com.appham.mockinizer
 
+import com.appham.mockinizer.Method.*
 import com.nhaarman.mockitokotlin2.*
 import okhttp3.Interceptor
+import okhttp3.MediaType
 import okhttp3.Request
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.mockwebserver.MockResponse
+import okio.BufferedSink
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInstance
@@ -33,7 +37,10 @@ internal class MockinizerInterceptorTest {
         val requestUrl = "$realBaseurl${args.requestFilter.path.orEmpty()}"
         val request = Request.Builder()
             .url(requestUrl)
-            .method(args.requestFilter.method.name, args.requestFilter.body?.toRequestBody())
+            .method(
+                args.requestFilter.method.name,
+                args.requestFilter.body.orDummyBody(args.requestFilter.method)
+            )
             .headers(args.requestFilter.headers)
             .build()
 
@@ -58,15 +65,42 @@ internal class MockinizerInterceptorTest {
         }
     }
 
+    /**
+     * Provides test data for parameterized test
+     */
     private fun args() = mutableListOf(
 
         // Test requests that should NOT get mocked:
         TestData(RequestFilter(), null),
         TestData(RequestFilter(path = "banana"), null),
-        TestData(RequestFilter(method = Method.DELETE, body = """{"type":"apple"}"""), null),
-        TestData(RequestFilter(method = Method.PATCH, body = """{"type":"apple"}"""), null),
-        TestData(RequestFilter(method = Method.PUT, path = "banana", body = """{"type":"apple"}"""), null),
-        TestData(RequestFilter(method = Method.POST, path = "banana", body = """{"type":"apple"}"""), null)
+        TestData(RequestFilter(method = DELETE, body = """{"type":"apple"}"""), null),
+        TestData(RequestFilter(method = PATCH, body = """{"type":"apple"}"""), null),
+        TestData(RequestFilter(method = PUT, path = "banana", body = """{"type":"apple"}"""), null),
+        TestData(RequestFilter(method = POST, path = "banana", body = """{"type":"apple"}"""), null),
+        TestData(RequestFilter(method = POST, path = "banana", body = null), null),
+
+        // Test requests that actually should get mocked:
+        TestData(RequestFilter(method = POST, path = "/typicode/demo/foo", body = """{"type":"apple"}"""),
+            mockResponse = MockResponse().apply {
+                setResponseCode(200)
+                setBody("""{"title":"I don't care which body you posted!"}""")
+            }),
+        TestData(RequestFilter(method = POST, path = "/typicode/demo/foo", body = """{"type":"whatever"}"""),
+            mockResponse = MockResponse().apply {
+                setResponseCode(200)
+                setBody("""{"title":"I don't care which body you posted!"}""")
+            }),
+        TestData(RequestFilter(method = POST, path = "/typicode/demo/foo", body = ""),
+            mockResponse = MockResponse().apply {
+                setResponseCode(200)
+                setBody("""{"title":"I don't care which body you posted!"}""")
+            }),
+        TestData(RequestFilter(method = POST, path = "/typicode/demo/foo", body = null),
+            mockResponse = MockResponse().apply {
+                setResponseCode(200)
+                setBody("""{"title":"I don't care which body you posted!"}""")
+            })
+
     ).apply {
 
         // All requests from mockinizer mocks map should get mocked:
@@ -79,3 +113,24 @@ internal class MockinizerInterceptorTest {
     )
 
 }
+
+/**
+ * OkHttp complains if there are POST, PUT or PATCH requests without request body:
+ * This returns a dummy request body if needed
+ */
+private fun String?.orDummyBody(method: Method): RequestBody? =
+    this?.toRequestBody()
+        ?: when (method) {
+            POST,
+            PUT,
+            PATCH -> object : RequestBody() {
+                override fun contentType(): MediaType? {
+                    TODO("not implemented")
+                }
+
+                override fun writeTo(sink: BufferedSink) {}
+            }
+
+            GET,
+            DELETE -> null
+        }
