@@ -34,6 +34,15 @@ val mocks: Map<RequestFilter, MockResponse> = mapOf(
     },
 
     RequestFilter(
+        path = "/typicode/demo/foo",
+        method = Method.POST,
+        body = null
+    ) to MockResponse().apply {
+        setResponseCode(200)
+        setBody("""{"title":"I don't care which body you posted!"}""")
+    },
+
+    RequestFilter(
         path = "/typicode/demo/header",
         headers = Headers.headersOf("name", "value")
     ) to MockResponse().apply {

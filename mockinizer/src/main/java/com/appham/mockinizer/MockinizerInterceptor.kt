@@ -15,7 +15,11 @@ class MockinizerInterceptor(
 
     override fun intercept(chain: Interceptor.Chain): Response {
 
-        fun findMockResponse(request: Request) = mocks[RequestFilter.from(request)]
+        fun findMockResponse(request: Request): MockResponse? {
+            return with(RequestFilter.from(request)) {
+                mocks[this] ?: mocks[this.copy(body = null)]
+            }
+        }
 
         fun Interceptor.Chain.findServer(): HttpUrl =
             when (val mockResponse = findMockResponse(request())) {
