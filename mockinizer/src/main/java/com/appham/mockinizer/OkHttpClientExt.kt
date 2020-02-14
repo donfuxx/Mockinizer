@@ -2,6 +2,7 @@ package com.appham.mockinizer
 
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
 import java.security.cert.X509Certificate
 import javax.net.ssl.*
 
@@ -23,13 +24,15 @@ import javax.net.ssl.*
  */
 fun OkHttpClient.Builder.mockinize(
     mocks: Map<RequestFilter, MockResponse> = mapOf(),
+    mockWebServer: MockWebServer = MockWebServer().configure(),
     trustManagers: Array<TrustManager> = getAllTrustingManagers(),
     socketFactory: SSLSocketFactory = getSslSocketFactory(trustManagers),
     hostnameVerifier: HostnameVerifier = HostnameVerifier { _, _ -> true }
 ): OkHttpClient.Builder {
-    addInterceptor(MockinizerInterceptor(mocks))
+    addInterceptor(MockinizerInterceptor(mocks, mockWebServer))
         .sslSocketFactory(socketFactory, trustManagers[0] as X509TrustManager)
         .hostnameVerifier(hostnameVerifier)
+    Mockinizer.init(mockWebServer)
     return this
 }
 
@@ -56,3 +59,18 @@ private fun getAllTrustingManagers(): Array<TrustManager> = arrayOf(
         }
     }
 )
+
+object Mockinizer {
+
+    private var mockWebServer: MockWebServer? = null
+
+    internal fun init(mockWebServer: MockWebServer) {
+        this.mockWebServer = mockWebServer
+    }
+
+    @JvmStatic
+    fun shutDown() {
+        mockWebServer?.shutdown()
+    }
+
+}

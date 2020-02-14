@@ -8,6 +8,7 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
 import okio.BufferedSink
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -20,7 +21,9 @@ internal class MockinizerInterceptorTest {
 
     private val chain: Interceptor.Chain = mock()
 
-    private val systemUnderTest: MockinizerInterceptor = MockinizerInterceptor(mocks)
+    private val mockWebServer : MockWebServer = MockWebServer().configure()
+
+    private val systemUnderTest: MockinizerInterceptor = MockinizerInterceptor(mocks, mockWebServer)
 
     private val realBaseurl = "https://foo.bar"
 
