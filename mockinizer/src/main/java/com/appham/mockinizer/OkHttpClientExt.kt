@@ -69,6 +69,11 @@ object Mockinizer {
     }
 
     @JvmStatic
+    fun start(port: Int = 34567) {
+        mockWebServer?.start(port)
+    }
+
+    @JvmStatic
     fun shutDown() {
         mockWebServer?.shutdown()
     }
