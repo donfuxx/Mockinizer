@@ -1,5 +1,6 @@
 package com.appham.mockinizer
 
+import org.junit.AfterClass
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 
@@ -100,6 +101,14 @@ internal class MockinizerAndroidTest {
         assertEquals(expectedBody, actualResponse.body())
         assertEquals(expectedStatusCode, actualResponse.code())
         assertEquals(expectedMethod, actualResponse.raw().request.method)
+    }
+
+    companion object {
+
+        @AfterClass
+        fun tearDown() {
+            Mockinizer.shutDown()
+        }
     }
 
 }
