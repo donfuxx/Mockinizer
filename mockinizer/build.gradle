@@ -72,6 +72,7 @@ dependencies {
     androidTestImplementation "com.squareup.okhttp3:logging-interceptor:$logginginterceptor_version"
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:$mockserver_version"
 
+    androidTestImplementation 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
     androidTestImplementation "androidx.test:runner:$testrunner_version"
     androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
     androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$junit5_version"

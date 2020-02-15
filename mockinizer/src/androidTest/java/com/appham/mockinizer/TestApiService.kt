@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-private const val BASE_URL = "https://my-json-server.typicode.com/typicode/demo/"
+internal const val BASE_URL = "https://my-json-server.typicode.com/typicode/demo/"
 
 object TestApiService {
 
