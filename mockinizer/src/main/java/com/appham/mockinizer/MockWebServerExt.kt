@@ -6,10 +6,10 @@ import okhttp3.mockwebserver.MockWebServer
 import okhttp3.tls.HandshakeCertificates
 import okhttp3.tls.HeldCertificate
 
-internal fun MockWebServer.configure(): MockWebServer {
+internal fun MockWebServer.configure(port: Int = 34567): MockWebServer {
 
     GlobalScope.launch {
-        start(34567)
+        start(port)
     }
 
     val localhostCertificate = HeldCertificate.Builder()
