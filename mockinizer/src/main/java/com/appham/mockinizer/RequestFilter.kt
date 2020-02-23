@@ -21,13 +21,16 @@ data class RequestFilter(
 
     companion object {
 
-        fun from(request: Request) =
+        fun from(request: Request, log: Logger = DebugLogger) =
             RequestFilter(
                 path = request.url.encodedPath,
                 method = getMethodOrDefault(request.method),
                 body = request.body?.asString(),
                 headers = request.headers
-            )
+            ).also {
+                log.d("Created RequestFilter $it \n" +
+                        " for request: $request")
+            }
 
         private fun getMethodOrDefault(method:String) =
             try {

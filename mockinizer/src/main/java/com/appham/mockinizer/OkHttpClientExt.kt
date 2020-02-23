@@ -27,12 +27,16 @@ fun OkHttpClient.Builder.mockinize(
     mockWebServer: MockWebServer = MockWebServer().configure(),
     trustManagers: Array<TrustManager> = getAllTrustingManagers(),
     socketFactory: SSLSocketFactory = getSslSocketFactory(trustManagers),
-    hostnameVerifier: HostnameVerifier = HostnameVerifier { _, _ -> true }
+    hostnameVerifier: HostnameVerifier = HostnameVerifier { _, _ -> true },
+    log: Logger = DebugLogger
 ): OkHttpClient.Builder {
     addInterceptor(MockinizerInterceptor(mocks, mockWebServer))
         .sslSocketFactory(socketFactory, trustManagers[0] as X509TrustManager)
         .hostnameVerifier(hostnameVerifier)
     Mockinizer.init(mockWebServer)
+
+    log.d( "Mockinized $this with mocks: $mocks and MockWebServer $mockWebServer")
+
     return this
 }
 
