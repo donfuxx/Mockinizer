@@ -78,6 +78,10 @@ internal class MockinizerInterceptorTest {
         TestData(RequestFilter(method = PUT, path = "banana", body = """{"type":"apple"}"""), null),
         TestData(RequestFilter(method = POST, path = "banana", body = """{"type":"apple"}"""), null),
         TestData(RequestFilter(method = POST, path = "banana", body = null), null),
+        TestData(RequestFilter(method = GET, path = "/typicode/demo/headersNone", headers = Headers.headersOf("a", "b")),
+            mockResponse = null),
+        TestData(RequestFilter(path = "/typicode/demo/header", headers = Headers.headersOf("a", "b")),
+            mockResponse = null),
 
         // Test requests that actually should get mocked:
         TestData(RequestFilter(method = POST, path = "/typicode/demo/foo", body = """{"type":"apple"}"""),
@@ -104,6 +108,11 @@ internal class MockinizerInterceptorTest {
             mockResponse = MockResponse().apply {
                 setResponseCode(200)
                 setBody("""{"title":"header is ignored"}""")
+            }),
+        TestData(RequestFilter(method = GET, path = "/typicode/demo/headersNone", headers = Headers.headersOf()),
+            mockResponse = MockResponse().apply {
+                setResponseCode(200)
+                setBody("""{"title":"only mocked if no headers at all"}""")
             })
 
         ).apply {
