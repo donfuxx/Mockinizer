@@ -2,10 +2,7 @@ package com.appham.mockinizer
 
 import com.appham.mockinizer.Method.*
 import com.nhaarman.mockitokotlin2.*
-import okhttp3.Interceptor
-import okhttp3.MediaType
-import okhttp3.Request
-import okhttp3.RequestBody
+import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -44,7 +41,7 @@ internal class MockinizerInterceptorTest {
                 args.requestFilter.method.name,
                 args.requestFilter.body.orDummyBody(args.requestFilter.method)
             )
-            .headers(args.requestFilter.headers)
+            .headers(args.requestFilter.headers ?: Headers.headersOf())
             .build()
 
         // plugin the request into the MockinizerInterceptor
@@ -102,9 +99,14 @@ internal class MockinizerInterceptorTest {
             mockResponse = MockResponse().apply {
                 setResponseCode(200)
                 setBody("""{"title":"I don't care which body you posted!"}""")
+            }),
+        TestData(RequestFilter(method = GET, path = "/typicode/demo/headersAny", headers = null),
+            mockResponse = MockResponse().apply {
+                setResponseCode(200)
+                setBody("""{"title":"header is ignored"}""")
             })
 
-    ).apply {
+        ).apply {
 
         // All requests from mockinizer mocks map should get mocked:
         addAll(mocks.map { TestData(it.key, it.value) })

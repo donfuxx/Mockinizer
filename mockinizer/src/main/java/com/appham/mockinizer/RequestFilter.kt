@@ -16,7 +16,7 @@ data class RequestFilter(
     val path: String? = null,
     val method: Method = Method.GET,
     val body: String? = null,
-    val headers: Headers = Headers.headersOf()
+    val headers: Headers? = Headers.headersOf()
 ) {
 
     companion object {

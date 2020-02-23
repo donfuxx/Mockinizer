@@ -54,6 +54,14 @@ val mocks: Map<RequestFilter, MockResponse> = mapOf(
         headers = Headers.headersOf("name", "value", "foo", "bar")
     ) to MockResponse().apply {
         setResponseCode(200)
+    },
+
+    RequestFilter(
+        path = "/typicode/demo/headersAny",
+        headers = null
+    ) to MockResponse().apply {
+        setResponseCode(200)
+        setBody("""{"title":"header is ignored"}""")
     }
 )
 
