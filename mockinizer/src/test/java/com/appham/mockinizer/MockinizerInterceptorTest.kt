@@ -2,10 +2,7 @@ package com.appham.mockinizer
 
 import com.appham.mockinizer.Method.*
 import com.nhaarman.mockitokotlin2.*
-import okhttp3.Interceptor
-import okhttp3.MediaType
-import okhttp3.Request
-import okhttp3.RequestBody
+import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -23,7 +20,7 @@ internal class MockinizerInterceptorTest {
 
     private val mockWebServer : MockWebServer = MockWebServer().configure()
 
-    private val systemUnderTest: MockinizerInterceptor = MockinizerInterceptor(mocks, mockWebServer)
+    private val systemUnderTest: MockinizerInterceptor = MockinizerInterceptor(mocks, mockWebServer, DummyLogger)
 
     private val realBaseurl = "https://foo.bar"
 
@@ -44,7 +41,7 @@ internal class MockinizerInterceptorTest {
                 args.requestFilter.method.name,
                 args.requestFilter.body.orDummyBody(args.requestFilter.method)
             )
-            .headers(args.requestFilter.headers)
+            .headers(args.requestFilter.headers ?: Headers.headersOf())
             .build()
 
         // plugin the request into the MockinizerInterceptor
@@ -81,6 +78,10 @@ internal class MockinizerInterceptorTest {
         TestData(RequestFilter(method = PUT, path = "banana", body = """{"type":"apple"}"""), null),
         TestData(RequestFilter(method = POST, path = "banana", body = """{"type":"apple"}"""), null),
         TestData(RequestFilter(method = POST, path = "banana", body = null), null),
+        TestData(RequestFilter(method = GET, path = "/typicode/demo/headersNone", headers = Headers.headersOf("a", "b")),
+            mockResponse = null),
+        TestData(RequestFilter(path = "/typicode/demo/header", headers = Headers.headersOf("a", "b")),
+            mockResponse = null),
 
         // Test requests that actually should get mocked:
         TestData(RequestFilter(method = POST, path = "/typicode/demo/foo", body = """{"type":"apple"}"""),
@@ -102,9 +103,19 @@ internal class MockinizerInterceptorTest {
             mockResponse = MockResponse().apply {
                 setResponseCode(200)
                 setBody("""{"title":"I don't care which body you posted!"}""")
+            }),
+        TestData(RequestFilter(method = GET, path = "/typicode/demo/headersAny", headers = null),
+            mockResponse = MockResponse().apply {
+                setResponseCode(200)
+                setBody("""{"title":"header is ignored"}""")
+            }),
+        TestData(RequestFilter(method = GET, path = "/typicode/demo/headersNone", headers = Headers.headersOf()),
+            mockResponse = MockResponse().apply {
+                setResponseCode(200)
+                setBody("""{"title":"only mocked if no headers at all"}""")
             })
 
-    ).apply {
+        ).apply {
 
         // All requests from mockinizer mocks map should get mocked:
         addAll(mocks.map { TestData(it.key, it.value) })

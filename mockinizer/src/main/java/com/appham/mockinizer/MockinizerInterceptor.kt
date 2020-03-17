@@ -10,14 +10,27 @@ import okhttp3.mockwebserver.MockWebServer
 
 class MockinizerInterceptor(
     private val mocks: Map<RequestFilter, MockResponse> = emptyMap(),
-    private val mockServer: MockWebServer
+    private val mockServer: MockWebServer,
+    private val log: Logger = DebugLogger
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
 
         fun findMockResponse(request: Request): MockResponse? {
-            return with(RequestFilter.from(request)) {
-                mocks[this] ?: mocks[this.copy(body = null)]
+            return with(RequestFilter.from(request, log)) {
+                val foundMockResponse = mocks[this]
+                    ?: mocks[this.copy(body = null)]
+                    ?: mocks[this.copy(headers = null)]
+                    ?: mocks[this.copy(body = null, headers = null)]
+
+                if (foundMockResponse == null) {
+                    log.d("No mocks found for $request")
+                } else {
+                    log.d("Found Mock response: $foundMockResponse " +
+                            "for request: $request")
+                }
+
+                foundMockResponse
             }
         }
 
