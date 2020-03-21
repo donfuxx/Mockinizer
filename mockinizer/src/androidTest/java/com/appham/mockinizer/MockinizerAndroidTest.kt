@@ -143,7 +143,19 @@ internal class MockinizerAndroidTest {
     fun testShouldNotContainMockinizerHeaders_WhenRealApiCalled() {
         val actualResponse = TestApiService.testApi.getPosts().execute()
 
-        assertEquals(0, actualResponse.headers().values(mockVersionHeader).size)
+        assertEquals(0, actualResponse.headers().count { (name, value) ->
+            value == mockVersionHeader
+        })
+    }
+
+    @Test
+    fun testShouldNotContainMockinizerHeadersDuplicates_WhenMultipleApiCalls() {
+        TestApiService.testApi.getMockedHeaders().execute()
+        val actualResponse = TestApiService.testApi.getMockedHeaders().execute()
+
+        assertEquals(1, actualResponse.headers().count { (name, value) ->
+            value == mockVersionHeader
+        })
     }
 
     companion object {
