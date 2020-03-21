@@ -35,7 +35,7 @@ class MockinizerInterceptor(
         }
 
         fun Interceptor.Chain.findServer(): HttpUrl =
-            when (val mockResponse = findMockResponse(request())) {
+            when (val mockResponse = findMockResponse(request())?.clone()) {
                 is MockResponse -> {
                     mockResponse.addHeader(
                         "Mockinizer",
