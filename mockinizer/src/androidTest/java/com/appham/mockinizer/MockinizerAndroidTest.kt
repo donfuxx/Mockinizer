@@ -6,9 +6,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 
 internal class MockinizerAndroidTest {
 
-    private val realServerUrl = "https://my-json-server.typicode.com/typicode/demo/"
-    private val mockServerUrl = "https://localhost:34567/typicode/demo/"
-
     @Test
     fun testShouldCallRealServer_WhenPostsApiCalled() {
         val actualResponse = TestApiService.testApi.getPosts().execute()
@@ -132,17 +129,28 @@ internal class MockinizerAndroidTest {
     }
 
     @Test
-    fun testShouldContainMockinizerHeaders_WhenApiCalled() {
+    fun testShouldContainMockinizerHeaders_WhenMockApiCalled() {
         val actualResponse = TestApiService.testApi.getMockedHeadersAny2().execute()
 
-        assertEquals("server" to "Mockinizer ${BuildConfig.VERSION_NAME} by Thomas Fuchs-Martin",
+        assertEquals("server" to mockVersionHeader,
             actualResponse.headers().last())
         assertEquals("<-- Real request https://my-json-server.typicode.com/typicode/demo/headersAny is now mocked to HTTP/1.1 200 OK",
             actualResponse.headers()["Mockinizer"]
         )
     }
 
+    @Test
+    fun testShouldNotContainMockinizerHeaders_WhenRealApiCalled() {
+        val actualResponse = TestApiService.testApi.getPosts().execute()
+
+        assertEquals(0, actualResponse.headers().values(mockVersionHeader).size)
+    }
+
     companion object {
+
+        private const val realServerUrl = "https://my-json-server.typicode.com/typicode/demo/"
+        private const val mockServerUrl = "https://localhost:34567/typicode/demo/"
+        private const val mockVersionHeader = "Mockinizer ${BuildConfig.VERSION_NAME} by Thomas Fuchs-Martin"
 
         @AfterClass
         fun tearDown() {
