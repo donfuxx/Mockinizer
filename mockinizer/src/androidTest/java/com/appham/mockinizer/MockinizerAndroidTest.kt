@@ -131,6 +131,17 @@ internal class MockinizerAndroidTest {
         assertEquals(expectedMethod, actualResponse.raw().request.method)
     }
 
+    @Test
+    fun testShouldContainMockinizerHeaders_WhenApiCalled() {
+        val actualResponse = TestApiService.testApi.getMockedHeadersAny2().execute()
+
+        assertEquals("server" to "Mockinizer ${BuildConfig.VERSION_NAME} by Thomas Fuchs-Martin",
+            actualResponse.headers().last())
+        assertEquals("<-- Real request https://my-json-server.typicode.com/typicode/demo/headersAny is now mocked to HTTP/1.1 200 OK",
+            actualResponse.headers()["Mockinizer"]
+        )
+    }
+
     companion object {
 
         @AfterClass
