@@ -2,6 +2,7 @@ package com.appham.mockinizer
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.mockwebserver.MockWebServer
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -17,6 +18,8 @@ object TestApiService {
         retrofit.create(TestApi::class.java)
     }
 
+    val mockWebServer: MockWebServer = MockWebServer().configure()
+
     /**
      * Http client with logging enabled
      */
@@ -25,7 +28,7 @@ object TestApiService {
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .mockinize(mocks)
+            .mockinize(mocks, mockWebServer)
             .build()
     }
 
