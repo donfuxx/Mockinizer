@@ -27,7 +27,7 @@ allprojects {
 Add the below code in the **app module's build.gradle** (Usually you want to implement it only in debug builds and not release builds) At the time of writing the latest mockinizer_version was 1.1.0, you can get **latest release** version here: https://github.com/donfuxx/Mockinizer/releases
 ```gradle
 dependencies {
-    debugImplementation "com.github.donfuxx:Mockinizer:1.4.0"
+    debugImplementation "com.github.donfuxx:Mockinizer:1.5.0"
 }
 ``` 
 You may also need to add a MockWebServer dependency in your app module:
@@ -72,25 +72,36 @@ Yes, that is it! Just add `.mockinize(mocks)` into the OkHttpClient.Builder chai
 ### 5. Launch app and check logs to verify mocking is working
 Once you call a mockinized api endpoint in your app then you can verify the mocked responses in the logcat. The attached HttpLogging interceptor should produce logs similar to:
 ```
+D/OkHttp: --> GET https://my-json-server.typicode.com/typicode/demo/mockedError
+D/OkHttp: --> END GET
+D/OkHttp: --> GET https://my-json-server.typicode.com/typicode/demo/mocked
+D/OkHttp: --> END GET
 D/OkHttp: --> GET https://my-json-server.typicode.com/typicode/demo/posts
 D/OkHttp: --> END GET
-D/OkHttp: --> GET https://my-json-server.typicode.com/mockedError
-D/OkHttp: --> END GET
-D/OkHttp: --> GET https://my-json-server.typicode.com/mocked
-D/OkHttp: --> END GET
-D/OkHttp: <-- 400 https://localhost:51970/mockedError (164ms)
+D/OkHttp: <-- 400 https://localhost:34567/typicode/demo/mockedError (97ms)
 D/OkHttp: content-length: 0
-D/OkHttp: mockinizer: <-- Real request https://my-json-server.typicode.com/mockedError is now mocked to HTTP/1.1 400 Client Error
+D/OkHttp: mockinizer: <-- Real request /typicode/demo/mockedError is now mocked to HTTP/1.1 400 Client Error
+D/OkHttp: server: Mockinizer 1.5.0 by Thomas Fuchs-Martin
 D/OkHttp: <-- END HTTP (0-byte body)
-D/OkHttp: <-- 200 https://localhost:51970/mocked (175ms)
-D/OkHttp: content-length: 24
-D/OkHttp: mockinizer: <-- Real request https://my-json-server.typicode.com/mocked is now mocked to HTTP/1.1 200 OK
-D/OkHttp: {"title": "Banana Mock"}
-D/OkHttp: <-- END HTTP (24-byte body)
-D/OkHttp: <-- 200 https://my-json-server.typicode.com/typicode/demo/posts (468ms)
-D/OkHttp: date: Sun, 04 Aug 2019 15:43:38 GMT
+D/OkHttp: <-- 200 https://localhost:34567/typicode/demo/mocked (104ms)
+D/OkHttp: content-length: 98
+D/OkHttp: mockinizer: <-- Real request /typicode/demo/mocked is now mocked to HTTP/1.1 200 OK
+D/OkHttp: server: Mockinizer 1.5.0 by Thomas Fuchs-Martin
+D/OkHttp: [
+D/OkHttp:   {
+D/OkHttp:     "id": 555,
+D/OkHttp:     "title": "Banana Mock"
+D/OkHttp:   },
+D/OkHttp:   {
+D/OkHttp:     "id": 675,
+D/OkHttp:     "title": "foooo"
+D/OkHttp:   }
+D/OkHttp: ]
+D/OkHttp: <-- END HTTP (98-byte body)
+D/OkHttp: <-- 200 https://my-json-server.typicode.com/typicode/demo/posts (1416ms)
+D/OkHttp: date: Sat, 28 Mar 2020 19:11:32 GMT
 D/OkHttp: content-type: application/json; charset=utf-8
-D/OkHttp: set-cookie: __cfduid=d984bcb9e638f81a7717a35549ba949791564933418; expires=Mon, 03-Aug-20 15:43:38 GMT; path=/; domain=.typicode.com; HttpOnly
+D/OkHttp: set-cookie: __cfduid=de53d4c305959e69c3e8ea1e6b78959001585422691; expires=Mon, 27-Apr-20 19:11:31 GMT; path=/; domain=.typicode.com; HttpOnly; SameSite=Lax
 D/OkHttp: x-powered-by: Express
 D/OkHttp: vary: Origin, Accept-Encoding
 D/OkHttp: access-control-allow-credentials: true
@@ -100,9 +111,10 @@ D/OkHttp: expires: -1
 D/OkHttp: x-content-type-options: nosniff
 D/OkHttp: etag: W/"86-YtXc+x6dfp/4aT8kTDdp4oV+9kU"
 D/OkHttp: via: 1.1 vegur
+D/OkHttp: cf-cache-status: DYNAMIC
 D/OkHttp: expect-ct: max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
 D/OkHttp: server: cloudflare
-D/OkHttp: cf-ray: 5011a5e80d686b65-LHR
+D/OkHttp: cf-ray: 57b3a8502b8a71f7-AMS
 D/OkHttp: [
 D/OkHttp:   {
 D/OkHttp:     "id": 1,
