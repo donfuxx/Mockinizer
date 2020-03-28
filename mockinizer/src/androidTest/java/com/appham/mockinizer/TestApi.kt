@@ -52,4 +52,7 @@ interface TestApi {
     @GET("headersAny")
     fun getMockedHeadersAny2(): Call<Post>
 
+    @GET("headersNone")
+    fun getMockedHeadersNone(): Call<Post>
+
 }

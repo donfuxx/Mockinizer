@@ -3,6 +3,10 @@ package com.appham.mockinizer
 import org.junit.AfterClass
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.concurrent.CountDownLatch
 
 internal class MockinizerAndroidTest {
 
@@ -132,9 +136,12 @@ internal class MockinizerAndroidTest {
     fun testShouldContainMockinizerHeaders_WhenMockApiCalled() {
         val actualResponse = TestApiService.testApi.getMockedHeadersAny2().execute()
 
-        assertEquals("server" to mockVersionHeader,
-            actualResponse.headers().last())
-        assertEquals("<-- Real request https://my-json-server.typicode.com/typicode/demo/headersAny is now mocked to HTTP/1.1 200 OK",
+        assertEquals(
+            "server" to mockVersionHeader,
+            actualResponse.headers().last()
+        )
+        assertEquals(
+            "<-- Real request /typicode/demo/headersAny is now mocked to HTTP/1.1 200 OK",
             actualResponse.headers()["Mockinizer"]
         )
     }
@@ -158,11 +165,67 @@ internal class MockinizerAndroidTest {
         })
     }
 
+    @Test
+    fun testReturnCorrectResponse_WhenSimultaneousMockApiCalls() {
+
+        val latch = CountDownLatch(3)
+
+        var headersAnyResponseBody: Post? = null
+
+        TestApiService.testApi.getMockedHeadersAny().enqueue(
+            object : Callback<Post> {
+                override fun onFailure(call: Call<Post>, t: Throwable) {}
+
+                override fun onResponse(call: Call<Post>, response: Response<Post>) {
+                    headersAnyResponseBody = response.body()
+                    latch.countDown()
+                }
+
+            }
+        )
+
+        var headersNoneResponseBody: Post? = null
+
+        TestApiService.testApi.getMockedHeadersNone().enqueue(
+            object : Callback<Post> {
+                override fun onFailure(call: Call<Post>, t: Throwable) {}
+
+                override fun onResponse(call: Call<Post>, response: Response<Post>) {
+                    headersNoneResponseBody = response.body()
+                    latch.countDown()
+                }
+
+            }
+        )
+
+        var postResponseBody: Post? = null
+
+        TestApiService.testApi.getMockedPost(Post(title = "hey ya")).enqueue(
+            object : Callback<Post> {
+                override fun onFailure(call: Call<Post>, t: Throwable) {}
+
+                override fun onResponse(call: Call<Post>, response: Response<Post>) {
+                    postResponseBody = response.body()
+                    latch.countDown()
+                }
+
+            }
+        )
+
+        latch.await()
+
+        assertEquals("header is ignored", headersAnyResponseBody?.title)
+        assertEquals("only mocked if no headers at all", headersNoneResponseBody?.title)
+        assertEquals("foobar", postResponseBody?.title)
+
+    }
+
     companion object {
 
         private const val realServerUrl = "https://my-json-server.typicode.com/typicode/demo/"
         private const val mockServerUrl = "https://localhost:34567/typicode/demo/"
-        private const val mockVersionHeader = "Mockinizer ${BuildConfig.VERSION_NAME} by Thomas Fuchs-Martin"
+        private const val mockVersionHeader =
+            "Mockinizer ${BuildConfig.VERSION_NAME} by Thomas Fuchs-Martin"
 
         @AfterClass
         fun tearDown() {
