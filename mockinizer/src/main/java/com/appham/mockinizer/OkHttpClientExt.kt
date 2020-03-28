@@ -1,5 +1,6 @@
 package com.appham.mockinizer
 
+import com.appham.mockinizer.Mockinizer.mockWebServer
 import okhttp3.Headers
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.Dispatcher
@@ -39,7 +40,7 @@ fun OkHttpClient.Builder.mockinize(
         .hostnameVerifier(hostnameVerifier)
     Mockinizer.init(mockWebServer, mocks)
 
-    log.d( "Mockinized $this with mocks: $mocks and MockWebServer $mockWebServer")
+    log.d("Mockinized $this with mocks: $mocks and MockWebServer $mockWebServer")
 
     return this
 }
@@ -72,12 +73,15 @@ internal class MockDispatcher(private val mocks: Map<RequestFilter, MockResponse
 
     @Throws(InterruptedException::class)
     override fun dispatch(request: RecordedRequest): MockResponse {
-        return with(RequestFilter.from(request)){
+        return with(RequestFilter.from(request)) {
             mocks[RequestFilter.from(request)]
                 ?: mocks[this.copy(body = null)]
                 ?: mocks[this.copy(headers = request.headers.withClearedOkhttpHeaders())]
                 ?: mocks[this.copy(headers = null)]
-                ?: mocks[this.copy(body = null, headers = request.headers.withClearedOkhttpHeaders())]
+                ?: mocks[this.copy(
+                    body = null,
+                    headers = request.headers.withClearedOkhttpHeaders()
+                )]
                 ?: mocks[this.copy(body = null, headers = null)]
                 ?: MockResponse().setResponseCode(404)
         }
@@ -87,17 +91,26 @@ internal class MockDispatcher(private val mocks: Map<RequestFilter, MockResponse
      * Removes headers that OkHttp would add to RecordedRequest
      */
     private fun Headers.withClearedOkhttpHeaders() =
-        newBuilder()
-            .removeAll(":authority")
-            .removeAll(":scheme")
-            .removeAll("accept-encoding")
-            .removeAll("user-agent")
-            .build()
+        if (
+            get(":authority") == "localhost:${mockWebServer?.port}" &&
+            get(":scheme")?.matches("https?".toRegex()) == true &&
+            get("accept-encoding") == "gzip" &&
+            get("user-agent")?.startsWith("okhttp/") == true
+        ) {
+            newBuilder()
+                .removeAll(":authority")
+                .removeAll(":scheme")
+                .removeAll("accept-encoding")
+                .removeAll("user-agent")
+                .build()
+        } else {
+            this
+        }
 }
 
 object Mockinizer {
 
-    private var mockWebServer: MockWebServer? = null
+    internal var mockWebServer: MockWebServer? = null
 
     internal fun init(
         mockWebServer: MockWebServer,
