@@ -1,5 +1,6 @@
 package com.appham.mockinizer
 
+import okhttp3.Headers
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
@@ -74,11 +75,24 @@ internal class MockDispatcher(private val mocks: Map<RequestFilter, MockResponse
         return with(RequestFilter.from(request)){
             mocks[RequestFilter.from(request)]
                 ?: mocks[this.copy(body = null)]
+                ?: mocks[this.copy(headers = request.headers.withClearedOkhttpHeaders())]
                 ?: mocks[this.copy(headers = null)]
+                ?: mocks[this.copy(body = null, headers = request.headers.withClearedOkhttpHeaders())]
                 ?: mocks[this.copy(body = null, headers = null)]
                 ?: MockResponse().setResponseCode(404)
         }
     }
+
+    /**
+     * Removes headers that OkHttp would add to RecordedRequest
+     */
+    private fun Headers.withClearedOkhttpHeaders() =
+        newBuilder()
+            .removeAll(":authority")
+            .removeAll(":scheme")
+            .removeAll("accept-encoding")
+            .removeAll("user-agent")
+            .build()
 }
 
 object Mockinizer {

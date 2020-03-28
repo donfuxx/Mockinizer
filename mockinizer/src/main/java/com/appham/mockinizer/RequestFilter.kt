@@ -41,7 +41,7 @@ data class RequestFilter(
                 path = request.path,
                 method = getMethodOrDefault(request.method),
                 body = request.body.clone().readUtf8(),
-                headers = request.headers.clearOkhttpHeaders()
+                headers = request.headers
             ).also {
                 log.d(
                     "Created RequestFilter $it \n" +
@@ -71,11 +71,3 @@ fun RequestBody.asString(): String {
 fun RecordedRequest.asString(): String {
     return "$path  - $method - ${body.clone().readUtf8()} - $headers"
 }
-
-fun Headers.clearOkhttpHeaders() =
-    newBuilder()
-        .removeAll(":authority")
-        .removeAll(":scheme")
-        .removeAll("accept-encoding")
-        .removeAll("user-agent")
-        .build()
