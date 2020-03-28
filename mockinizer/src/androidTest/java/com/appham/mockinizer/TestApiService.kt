@@ -14,34 +14,28 @@ object TestApiService {
     /**
      * Create api interface for posts api
      */
-    val testApi: TestApi by lazy {
+    val testApi: TestApi = {
+
+        val mockWebServer: MockWebServer = MockWebServer().configure()
+
+        val okHttpClient by lazy {
+            val loggingInterceptor = HttpLoggingInterceptor()
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+            OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .mockinize(mocks, mockWebServer)
+                .build()
+        }
+
+        val retrofit by lazy {
+            Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        }
+
         retrofit.create(TestApi::class.java)
-    }
-
-    val mockWebServer: MockWebServer = MockWebServer().configure()
-
-    /**
-     * Http client with logging enabled
-     */
-    private val okHttpClient by lazy {
-        val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-        OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
-            .mockinize(mocks, mockWebServer)
-            .build()
-    }
-
-    /**
-     * Retrofit instance with Rxjava adapter
-     */
-    private val retrofit by lazy {
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
+    }()
 
 }

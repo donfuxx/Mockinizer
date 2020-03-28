@@ -1,6 +1,5 @@
 package com.appham.mockinizer
 
-import com.appham.mockinizer.Mockinizer.mockWebServer
 import okhttp3.Headers
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.Dispatcher
@@ -89,7 +88,7 @@ internal class MockDispatcher(private val mocks: Map<RequestFilter, MockResponse
      */
     private fun Headers.withClearedOkhttpHeaders() =
         if (
-            get(":authority") == "localhost:${mockWebServer?.port}" &&
+            get(":authority")?.startsWith("localhost:") == true &&
             get(":scheme")?.matches("https?".toRegex()) == true &&
             get("accept-encoding") == "gzip" &&
             get("user-agent")?.startsWith("okhttp/") == true
@@ -115,11 +114,11 @@ object Mockinizer {
     ) {
 
         mocks.entries.forEach { (requestFilter, mockResponse) ->
-            mockResponse.addHeader(
+            mockResponse.setHeader(
                 "Mockinizer",
                 " <-- Real request ${requestFilter.path} is now mocked to $mockResponse"
             )
-            mockResponse.addHeader(
+            mockResponse.setHeader(
                 "server",
                 "Mockinizer ${BuildConfig.VERSION_NAME} by Thomas Fuchs-Martin"
             )
