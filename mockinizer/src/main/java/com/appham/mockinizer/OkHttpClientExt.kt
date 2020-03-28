@@ -75,14 +75,11 @@ internal class MockDispatcher(private val mocks: Map<RequestFilter, MockResponse
     override fun dispatch(request: RecordedRequest): MockResponse {
         return with(RequestFilter.from(request)) {
             mocks[RequestFilter.from(request)]
-                ?: mocks[this.copy(body = null)]
-                ?: mocks[this.copy(headers = request.headers.withClearedOkhttpHeaders())]
-                ?: mocks[this.copy(headers = null)]
-                ?: mocks[this.copy(
-                    body = null,
-                    headers = request.headers.withClearedOkhttpHeaders()
-                )]
-                ?: mocks[this.copy(body = null, headers = null)]
+                ?: mocks[copy(body = null)]
+                ?: mocks[copy(headers = request.headers.withClearedOkhttpHeaders())]
+                ?: mocks[copy(headers = null)]
+                ?: mocks[copy(body = null, headers = request.headers.withClearedOkhttpHeaders())]
+                ?: mocks[copy(body = null, headers = null)]
                 ?: MockResponse().setResponseCode(404)
         }
     }
