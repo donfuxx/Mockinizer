@@ -141,7 +141,7 @@ internal class MockinizerAndroidTest {
             actualResponse.headers().last()
         )
         assertEquals(
-            "<-- Real request https://my-json-server.typicode.com/typicode/demo/headersAny is now mocked to HTTP/1.1 200 OK",
+            "<-- Real request /typicode/demo/headersAny is now mocked to HTTP/1.1 200 OK",
             actualResponse.headers()["Mockinizer"]
         )
     }
@@ -174,9 +174,7 @@ internal class MockinizerAndroidTest {
 
         TestApiService.testApi.getMockedHeadersAny().enqueue(
             object : Callback<Post> {
-                override fun onFailure(call: Call<Post>, t: Throwable) {
-                    TODO("not implemented")
-                }
+                override fun onFailure(call: Call<Post>, t: Throwable) {}
 
                 override fun onResponse(call: Call<Post>, response: Response<Post>) {
                     headersAnyResponseBody = response.body()
@@ -190,9 +188,7 @@ internal class MockinizerAndroidTest {
 
         TestApiService.testApi.getMockedHeadersNone().enqueue(
             object : Callback<Post> {
-                override fun onFailure(call: Call<Post>, t: Throwable) {
-                    TODO("not implemented")
-                }
+                override fun onFailure(call: Call<Post>, t: Throwable) {}
 
                 override fun onResponse(call: Call<Post>, response: Response<Post>) {
                     headersNoneResponseBody = response.body()
@@ -206,9 +202,7 @@ internal class MockinizerAndroidTest {
 
         TestApiService.testApi.getMockedPost(Post(title = "hey ya")).enqueue(
             object : Callback<Post> {
-                override fun onFailure(call: Call<Post>, t: Throwable) {
-                    TODO("not implemented")
-                }
+                override fun onFailure(call: Call<Post>, t: Throwable) {}
 
                 override fun onResponse(call: Call<Post>, response: Response<Post>) {
                     postResponseBody = response.body()

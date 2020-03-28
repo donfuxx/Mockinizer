@@ -1,10 +1,13 @@
 package com.appham.mockinizer
 
 import okhttp3.OkHttpClient
+import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import okhttp3.mockwebserver.RecordedRequest
 import java.security.cert.X509Certificate
 import javax.net.ssl.*
+
 
 /**
  * The main function that wires up the [MockWebServer] with [OkHttpClient]. Generally only the
@@ -33,7 +36,7 @@ fun OkHttpClient.Builder.mockinize(
     addInterceptor(MockinizerInterceptor(mocks, mockWebServer))
         .sslSocketFactory(socketFactory, trustManagers[0] as X509TrustManager)
         .hostnameVerifier(hostnameVerifier)
-    Mockinizer.init(mockWebServer)
+    Mockinizer.init(mockWebServer, mocks)
 
     log.d( "Mockinized $this with mocks: $mocks and MockWebServer $mockWebServer")
 
@@ -64,12 +67,44 @@ private fun getAllTrustingManagers(): Array<TrustManager> = arrayOf(
     }
 )
 
+internal class MockDispatcher(private val mocks: Map<RequestFilter, MockResponse>) : Dispatcher() {
+
+    @Throws(InterruptedException::class)
+    override fun dispatch(request: RecordedRequest): MockResponse {
+        return with(RequestFilter.from(request)){
+            mocks[RequestFilter.from(request)]
+                ?: mocks[this.copy(body = null)]
+                ?: mocks[this.copy(headers = null)]
+                ?: mocks[this.copy(body = null, headers = null)]
+                ?: MockResponse().setResponseCode(404)
+        }
+    }
+}
+
 object Mockinizer {
 
     private var mockWebServer: MockWebServer? = null
 
-    internal fun init(mockWebServer: MockWebServer) {
+    internal fun init(
+        mockWebServer: MockWebServer,
+        mocks: Map<RequestFilter, MockResponse>
+    ) {
+
+        mocks.entries.forEach { (requestFilter, mockResponse) ->
+            mockResponse.addHeader(
+                "Mockinizer",
+                " <-- Real request ${requestFilter.path} is now mocked to $mockResponse"
+            )
+            mockResponse.addHeader(
+                "server",
+                "Mockinizer ${BuildConfig.VERSION_NAME} by Thomas Fuchs-Martin"
+            )
+        }
+
+        mockWebServer.dispatcher = MockDispatcher(mocks)
+
         this.mockWebServer = mockWebServer
+
     }
 
     @JvmStatic

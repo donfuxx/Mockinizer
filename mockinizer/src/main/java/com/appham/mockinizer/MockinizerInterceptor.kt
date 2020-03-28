@@ -35,17 +35,8 @@ class MockinizerInterceptor(
         }
 
         fun Interceptor.Chain.findServer(): HttpUrl =
-            when (val mockResponse = findMockResponse(request())?.clone()) {
+            when (findMockResponse(request())) {
                 is MockResponse -> {
-                    mockResponse.addHeader(
-                        "Mockinizer",
-                        " <-- Real request ${request().url} is now mocked to $mockResponse"
-                    )
-                    mockResponse.addHeader(
-                        "server",
-                        "Mockinizer ${BuildConfig.VERSION_NAME} by Thomas Fuchs-Martin"
-                    )
-                    mockServer.enqueue(mockResponse)
                     request().url.newBuilder()
                         .host(mockServer.hostName)
                         .port(mockServer.port)
