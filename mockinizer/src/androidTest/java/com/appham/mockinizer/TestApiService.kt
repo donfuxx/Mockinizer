@@ -2,6 +2,7 @@ package com.appham.mockinizer
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.logging.HttpLoggingInterceptor.Level.BODY
 import okhttp3.mockwebserver.MockWebServer
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -16,26 +17,17 @@ object TestApiService {
      */
     val testApi: TestApi = {
 
-        val mockWebServer: MockWebServer = MockWebServer().configure()
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor().apply { level = BODY })
+            .mockinize(mocks, MockWebServer().configure())
+            .build()
 
-        val okHttpClient by lazy {
-            val loggingInterceptor = HttpLoggingInterceptor()
-            loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-            OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
-                .mockinize(mocks, mockWebServer)
-                .build()
-        }
-
-        val retrofit by lazy {
-            Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }
-
-        retrofit.create(TestApi::class.java)
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(TestApi::class.java)
     }()
 
 }
