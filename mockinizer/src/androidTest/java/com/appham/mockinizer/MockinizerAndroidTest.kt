@@ -223,7 +223,7 @@ internal class MockinizerAndroidTest {
     @Test
     fun testShouldCallMockServer_WhenMockQueryParamApiCalled() {
         val actualResponse = TestApiService.testApi.getMockedQueryParam().execute()
-        val expectedBody = null
+        val expectedBody = Unit
         val expectedUrl = "${mockServerUrl}query?param=foo"
         val expectedStatusCode = 200
 

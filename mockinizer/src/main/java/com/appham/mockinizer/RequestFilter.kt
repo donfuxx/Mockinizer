@@ -25,7 +25,7 @@ data class RequestFilter(
 
         fun from(request: Request, log: Logger = DebugLogger) =
             RequestFilter(
-                path = request.url.encodedPath,
+                path = request.urlWithQueryParams(),
                 method = getMethodOrDefault(request.method),
                 body = request.body?.asString(),
                 headers = request.headers
@@ -57,6 +57,12 @@ data class RequestFilter(
             }
     }
 }
+
+private fun Request.urlWithQueryParams(): String =
+    when (val query = url.encodedQuery) {
+        null -> url.encodedPath
+        else -> url.encodedPath.plus("?").plus(query)
+    }
 
 enum class Method {
     GET, POST, PUT, PATCH, DELETE;
