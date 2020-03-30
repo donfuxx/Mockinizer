@@ -22,7 +22,7 @@ internal class MockinizerInterceptorTest {
 
     private val systemUnderTest: MockinizerInterceptor = MockinizerInterceptor(mocks, mockWebServer, DummyLogger)
 
-    private val realBaseurl = "https://foo.bar"
+    private val realBaseurl = "https://real.api"
 
     @BeforeEach
     fun setup() {

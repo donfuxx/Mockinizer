@@ -70,6 +70,12 @@ val mocks: Map<RequestFilter, MockResponse> = mapOf(
     ) to MockResponse().apply {
         setResponseCode(200)
         setBody("""{"title":"only mocked if no headers at all"}""")
+    },
+
+    RequestFilter(
+        path = "/typicode/demo/query?param=foo"
+    ) to MockResponse().apply {
+        setResponseCode(200)
     }
 )
 
