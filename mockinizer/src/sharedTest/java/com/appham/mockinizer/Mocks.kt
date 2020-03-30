@@ -88,6 +88,12 @@ val mocks: Map<RequestFilter, MockResponse> = mapOf(
         path = "/typicode/demo/query?hey=ho"
     ) to MockResponse().apply {
         setResponseCode(400)
+    },
+
+    RequestFilter(
+        path = "/typicode/demo/query?hey=ho&bla=la"
+    ) to MockResponse().apply {
+        setResponseCode(404)
     }
 )
 
