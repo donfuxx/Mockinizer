@@ -73,27 +73,38 @@ val mocks: Map<RequestFilter, MockResponse> = mapOf(
     },
 
     RequestFilter(
-        path = "/typicode/demo/query?param=foo"
+        path = "/typicode/demo/query",
+        query = "param=foo"
     ) to MockResponse().apply {
         setResponseCode(200)
     },
 
     RequestFilter(
-        path = "/typicode/demo/query?param=boom"
+        path = "/typicode/demo/query",
+        query = "param=boom"
     ) to MockResponse().apply {
         setResponseCode(500)
     },
 
     RequestFilter(
-        path = "/typicode/demo/query?hey=ho"
+        path = "/typicode/demo/query",
+        query = "hey=ho"
     ) to MockResponse().apply {
         setResponseCode(400)
     },
 
     RequestFilter(
-        path = "/typicode/demo/query?hey=ho&bla=la"
+        path = "/typicode/demo/query",
+        query = "hey=ho&bla=la"
     ) to MockResponse().apply {
-        setResponseCode(404)
+        setResponseCode(503)
+    },
+
+    RequestFilter(
+        path = "/typicode/demo/query",
+        query = null
+    ) to MockResponse().apply {
+        setResponseCode(410)
     }
 )
 

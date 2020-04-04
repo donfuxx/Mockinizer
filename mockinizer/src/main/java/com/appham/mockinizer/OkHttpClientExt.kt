@@ -73,7 +73,7 @@ internal class MockDispatcher(private val mocks: Map<RequestFilter, MockResponse
     @Throws(InterruptedException::class)
     override fun dispatch(request: RecordedRequest): MockResponse {
         return with(RequestFilter.from(request)) {
-            mocks[RequestFilter.from(request)]
+            mocks[this]
                 ?: mocks[copy(body = null)]
                 ?: mocks[copy(headers = request.headers.withClearedOkhttpHeaders())]
                 ?: mocks[copy(headers = null)]
