@@ -6,6 +6,7 @@ import okhttp3.logging.HttpLoggingInterceptor.Level.BODY
 import okhttp3.mockwebserver.MockWebServer
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 
 internal const val BASE_URL = "https://my-json-server.typicode.com/typicode/demo/"
@@ -19,6 +20,10 @@ object TestApiService {
 
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply { level = BODY })
+            .callTimeout(5, TimeUnit.MINUTES)
+            .connectTimeout(5, TimeUnit.MINUTES)
+            .readTimeout(5, TimeUnit.MINUTES)
+            .writeTimeout(5, TimeUnit.MINUTES)
             .mockinize(mocks, MockWebServer().configure())
             .build()
 

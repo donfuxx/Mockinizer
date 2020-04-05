@@ -114,6 +114,10 @@ internal class MockinizerInterceptorTest {
             mockResponse = MockResponse().apply {
                 setResponseCode(200)
                 setBody("""{"title":"only mocked if no headers at all"}""")
+            }),
+        TestData(RequestFilter(path = "/typicode/demo/query", query = "a=b"),
+            mockResponse = MockResponse().apply {
+                setResponseCode(503)
             })
 
         ).apply {

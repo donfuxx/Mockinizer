@@ -119,13 +119,7 @@ val mocks: Map<RequestFilter, MockResponse> = mapOf(
         query = "b=c"
     ) to MockResponse().apply {
         setResponseCode(403)
-    },
-
-    RequestFilter(
-        path = "/typicode/demo/queryOnly",
-        query = null
-    ) to MockResponse().apply {
-        setResponseCode(503)
     }
+
 )
 

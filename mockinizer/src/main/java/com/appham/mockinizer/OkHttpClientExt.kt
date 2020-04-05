@@ -77,9 +77,20 @@ internal class MockDispatcher(private val mocks: Map<RequestFilter, MockResponse
                 ?: mocks[copy(body = null)]
                 ?: mocks[copy(headers = request.headers.withClearedOkhttpHeaders())]
                 ?: mocks[copy(headers = null)]
+                ?: mocks[copy(query = null)]
                 ?: mocks[copy(body = null, headers = request.headers.withClearedOkhttpHeaders())]
                 ?: mocks[copy(body = null, headers = null)]
-                ?: MockResponse().setResponseCode(404)
+                ?: mocks[copy(body = null, query = null)]
+                ?: mocks[copy(headers = null, query = null)]
+                ?: mocks[copy(headers = request.headers.withClearedOkhttpHeaders(), query = null)]
+                ?: mocks[copy(body = null, headers = null, query = null)]
+                ?: mocks[copy(body = null, headers = request.headers.withClearedOkhttpHeaders(), query = null)]
+                ?: MockResponse()
+                    .setResponseCode(404)
+                    .setBody("""{
+                        |"error":"Mockinizer ${BuildConfig.VERSION_NAME} could not dispatch response for $request", 
+                        |"requestFilter":"$this""
+                        |}""".trimMargin())
         }
     }
 

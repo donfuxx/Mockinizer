@@ -233,11 +233,23 @@ internal class MockinizerAndroidTest {
     }
 
     @Test
-    fun testShouldCallRealServer_WhenMockQueryParamApiCalledWithUnknownParams() {
-        val actualResponse = TestApiService.testApi.getMockedQueryParam("unknown").execute()
+    fun testShouldCallRealServer_WhenMockQueryOnlyApiCalledWithUnknownParams() {
+        val actualResponse = TestApiService.testApi.getMockedQueryOnly("unknown").execute()
         val expectedBody = null
-        val expectedUrl = "${realServerUrl}query?param=unknown"
+        val expectedUrl = "${realServerUrl}queryOnly?param=unknown"
         val expectedStatusCode = 404
+
+        assertEquals(expectedUrl, actualResponse.raw().request.url.toString())
+        assertEquals(expectedBody, actualResponse.body())
+        assertEquals(expectedStatusCode, actualResponse.code())
+    }
+
+    @Test
+    fun testShouldCallMockServer_WhenMockQueryAnyApiCalledWithParams() {
+        val actualResponse = TestApiService.testApi.getMockedQueryAny("unknown").execute()
+        val expectedBody = null
+        val expectedUrl = "${mockServerUrl}queryAny?param=unknown"
+        val expectedStatusCode = 401
 
         assertEquals(expectedUrl, actualResponse.raw().request.url.toString())
         assertEquals(expectedBody, actualResponse.body())
