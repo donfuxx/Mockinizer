@@ -16,7 +16,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "1.5.0"
+        versionName "1.6.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
@@ -85,7 +85,7 @@ dependencies {
 install {
     repositories.mavenInstaller {
         pom.groupId = "com.github.donfuxx"
-        pom.version = "1.5.0.local"
+        pom.version = "1.6.0.local"
         pom.artifactId = project.name
     }
 }

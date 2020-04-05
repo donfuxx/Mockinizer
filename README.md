@@ -27,7 +27,7 @@ allprojects {
 Add the below code in the **app module's build.gradle** (Usually you want to implement it only in debug builds and not release builds) At the time of writing the latest mockinizer_version was 1.1.0, you can get **latest release** version here: https://github.com/donfuxx/Mockinizer/releases
 ```gradle
 dependencies {
-    debugImplementation "com.github.donfuxx:Mockinizer:1.5.0"
+    debugImplementation "com.github.donfuxx:Mockinizer:1.6.0"
 }
 ``` 
 You may also need to add a MockWebServer dependency in your app module:
@@ -81,12 +81,12 @@ D/OkHttp: --> END GET
 D/OkHttp: <-- 400 https://localhost:34567/typicode/demo/mockedError (97ms)
 D/OkHttp: content-length: 0
 D/OkHttp: mockinizer: <-- Real request /typicode/demo/mockedError is now mocked to HTTP/1.1 400 Client Error
-D/OkHttp: server: Mockinizer 1.5.0 by Thomas Fuchs-Martin
+D/OkHttp: server: Mockinizer 1.6.0 by Thomas Fuchs-Martin
 D/OkHttp: <-- END HTTP (0-byte body)
 D/OkHttp: <-- 200 https://localhost:34567/typicode/demo/mocked (104ms)
 D/OkHttp: content-length: 98
 D/OkHttp: mockinizer: <-- Real request /typicode/demo/mocked is now mocked to HTTP/1.1 200 OK
-D/OkHttp: server: Mockinizer 1.5.0 by Thomas Fuchs-Martin
+D/OkHttp: server: Mockinizer 1.6.0 by Thomas Fuchs-Martin
 D/OkHttp: [
 D/OkHttp:   {
 D/OkHttp:     "id": 555,
