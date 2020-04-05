@@ -66,6 +66,11 @@ enum class Method {
     GET, POST, PUT, PATCH, DELETE;
 }
 
+fun RequestFilter.url(): String = when (query.isNullOrBlank()) {
+    true -> path.orEmpty()
+    false -> path.orEmpty().plus("?").plus(query)
+}
+
 fun RequestBody.asString(): String {
     val buffer = Buffer()
     writeTo(buffer)

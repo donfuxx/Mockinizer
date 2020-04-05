@@ -34,7 +34,7 @@ internal class MockinizerInterceptorTest {
     fun `Should mock response When RequestFilter contains request On intercept`(args: TestData) {
 
         // build a request for the chain to be intercepted by MockinizerInterceptor
-        val requestUrl = "$realBaseurl${args.requestFilter.path.orEmpty()}"
+        val requestUrl = "$realBaseurl${args.requestFilter.url()}"
         val request = Request.Builder()
             .url(requestUrl)
             .method(
@@ -82,6 +82,7 @@ internal class MockinizerInterceptorTest {
             mockResponse = null),
         TestData(RequestFilter(path = "/typicode/demo/header", headers = Headers.headersOf("a", "b")),
             mockResponse = null),
+        TestData(RequestFilter(path = "/typicode/demo/querynomock", query = "param=foo"), null),
 
         // Test requests that actually should get mocked:
         TestData(RequestFilter(method = POST, path = "/typicode/demo/foo", body = """{"type":"apple"}"""),
