@@ -22,7 +22,7 @@ internal class MockinizerInterceptorTest {
 
     private val systemUnderTest: MockinizerInterceptor = MockinizerInterceptor(mocks, mockWebServer, DummyLogger)
 
-    private val realBaseurl = "https://foo.bar"
+    private val realBaseurl = "https://real.api"
 
     @BeforeEach
     fun setup() {
@@ -34,7 +34,7 @@ internal class MockinizerInterceptorTest {
     fun `Should mock response When RequestFilter contains request On intercept`(args: TestData) {
 
         // build a request for the chain to be intercepted by MockinizerInterceptor
-        val requestUrl = "$realBaseurl${args.requestFilter.path.orEmpty()}"
+        val requestUrl = "$realBaseurl${args.requestFilter.url()}"
         val request = Request.Builder()
             .url(requestUrl)
             .method(
@@ -82,6 +82,8 @@ internal class MockinizerInterceptorTest {
             mockResponse = null),
         TestData(RequestFilter(path = "/typicode/demo/header", headers = Headers.headersOf("a", "b")),
             mockResponse = null),
+        TestData(RequestFilter(path = "/typicode/demo/querynomock", query = "param=foo"), null),
+        TestData(RequestFilter(path = "/typicode/demo/queryOnly", query = "param=foo"), null),
 
         // Test requests that actually should get mocked:
         TestData(RequestFilter(method = POST, path = "/typicode/demo/foo", body = """{"type":"apple"}"""),
@@ -113,6 +115,14 @@ internal class MockinizerInterceptorTest {
             mockResponse = MockResponse().apply {
                 setResponseCode(200)
                 setBody("""{"title":"only mocked if no headers at all"}""")
+            }),
+        TestData(RequestFilter(path = "/typicode/demo/query", query = "a=b"),
+            mockResponse = MockResponse().apply {
+                setResponseCode(503)
+            }),
+        TestData(RequestFilter(path = "/typicode/demo/queryAny", query = "what=ever"),
+            mockResponse = MockResponse().apply {
+                setResponseCode(502)
             })
 
         ).apply {

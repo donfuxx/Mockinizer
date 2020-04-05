@@ -19,9 +19,13 @@ class MockinizerInterceptor(
         fun findMockResponse(request: Request): MockResponse? {
             return with(RequestFilter.from(request, log)) {
                 val foundMockResponse = mocks[this]
-                    ?: mocks[this.copy(body = null)]
-                    ?: mocks[this.copy(headers = null)]
-                    ?: mocks[this.copy(body = null, headers = null)]
+                    ?: mocks[copy(body = null)]
+                    ?: mocks[copy(headers = null)]
+                    ?: mocks[copy(query = null)]
+                    ?: mocks[copy(body = null, headers = null)]
+                    ?: mocks[copy(body = null, query = null)]
+                    ?: mocks[copy(headers = null, query = null)]
+                    ?: mocks[copy(body = null, headers = null, query = null)]
 
                 if (foundMockResponse == null) {
                     log.d("No mocks found for $request")

@@ -55,4 +55,13 @@ interface TestApi {
     @GET("headersNone")
     fun getMockedHeadersNone(): Call<Post>
 
+    @GET("query")
+    fun getMockedQueryParam(@Query("param") param: String? = null): Call<Unit>
+
+    @GET("queryAny")
+    fun getMockedQueryAny(@Query("param") param: String? = null): Call<Unit>
+
+    @GET("queryOnly")
+    fun getMockedQueryOnly(@Query("param") param: String? = null): Call<Unit>
+
 }
