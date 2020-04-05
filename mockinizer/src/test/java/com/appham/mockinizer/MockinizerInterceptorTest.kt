@@ -83,6 +83,7 @@ internal class MockinizerInterceptorTest {
         TestData(RequestFilter(path = "/typicode/demo/header", headers = Headers.headersOf("a", "b")),
             mockResponse = null),
         TestData(RequestFilter(path = "/typicode/demo/querynomock", query = "param=foo"), null),
+        TestData(RequestFilter(path = "/typicode/demo/queryOnly", query = "param=foo"), null),
 
         // Test requests that actually should get mocked:
         TestData(RequestFilter(method = POST, path = "/typicode/demo/foo", body = """{"type":"apple"}"""),
@@ -118,6 +119,10 @@ internal class MockinizerInterceptorTest {
         TestData(RequestFilter(path = "/typicode/demo/query", query = "a=b"),
             mockResponse = MockResponse().apply {
                 setResponseCode(503)
+            }),
+        TestData(RequestFilter(path = "/typicode/demo/queryAny", query = "what=ever"),
+            mockResponse = MockResponse().apply {
+                setResponseCode(502)
             })
 
         ).apply {
