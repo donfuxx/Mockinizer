@@ -32,8 +32,6 @@ buildscript {
         classpath "com.github.dcendents:android-maven-gradle-plugin:$maven_gradle_version"
         classpath "de.mannodermaus.gradle.plugins:android-junit5:1.5.0.0"
 
-//        detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.7.4"
-
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -46,15 +44,15 @@ plugins {
 }
 
 detekt {
-    failFast = true // fail build on any finding
+//    failFast = true // fail build on any finding
+    input = files("$projectDir")
     buildUponDefaultConfig = true // preconfigure defaults
-    config = files("$projectDir/config/detekt.yml") // point to your custom config defining rules to run, overwriting default behavior
-    baseline = file("$projectDir/config/baseline.xml") // a way of suppressing issues before introducing detekt
 
     reports {
-        html.enabled = true // observe findings in your browser with structure and code snippets
-        xml.enabled = true // checkstyle like format mainly for integrations like Jenkins
-        txt.enabled = true // similar to the console output, contains issue signature to manually edit baseline files
+        html {
+            enabled = true
+            destination = file("$project.projectDir/detekt/detekt-report.html")
+        }
     }
 }
 
