@@ -1,6 +1,6 @@
 # Mockinizer [![](https://jitpack.io/v/donfuxx/Mockinizer.svg)](https://jitpack.io/#donfuxx/Mockinizer) [![Build Status](https://travis-ci.org/donfuxx/Mockinizer.svg?branch=master)](https://travis-ci.org/donfuxx/Mockinizer)
 
-An [OkHttpClient](https://github.com/square/okhttp) / [RetroFit](https://github.com/square/retrofit) web api call mocking library that uses [MockWebServer](https://github.com/square/okhttp/tree/master/mockwebserver) to provide mocked responses by using Interceptors.
+An [OkHttpClient](https://github.com/square/okhttp) / [RetroFit](https://github.com/square/retrofit) web api call mocking library that uses Square's [MockWebServer](https://github.com/square/okhttp/tree/master/mockwebserver) to provide mocked responses by using Interceptors.
 
 ## What is it?
 
